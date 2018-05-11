@@ -1,0 +1,48 @@
+{
+    "data": {
+        "result": [{
+            "id": 1,
+            "name": "name-11",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        },{
+            "id": 2,
+            "name": "name-222",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        },{
+            "id": 3,
+            "name": "name-333",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        },{
+            "id": 4,
+            "name": "name-444",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        },{
+            "id": 5,
+            "name": "name-5555",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        },{
+            "id": 6,
+            "name": "name-6666",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        },{
+            "id": 7,
+            "name": "name-nmb",
+            "code": "code",
+            "level": 123,
+            "boss": "lxk"
+        }],
+        "total": 23
+    }
+}
