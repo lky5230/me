@@ -139,7 +139,7 @@ Vue.prototype.utils = {
         for(let i=0; i<data.length; i++){
           data[i]._level = 0;
           for(let j=i+1; j<data.length; j++){
-            if(data[i].id == data[j].parentid){
+            if(data[i][id] == data[j][parentid]){
               data[i]._isleaf = 0;
               break;
             }
@@ -150,20 +150,20 @@ Vue.prototype.utils = {
         };
         //增加 _level
         for(let i=0; i<data.length; i++){
-          if(data[i].parentid != 0){
-            getLv(data[i], 1, data[i].parentid);
+          if(data[i][parentid] != 0){
+            getLv(data[i], 1, data[i][parentid]);
           };
         };
 
         function getLv(item, lv, pid){
           for(let j=0; j<data.length; j++){
-            if(data[j].id == pid){
-              if(data[j].parentid == 0){
+            if(data[j][id] == pid){
+              if(data[j][parentid] == 0){
                 item._level = lv;
                 return ;
               }else{
                 lv++;
-                getLv(item, lv, data[j].parentid);
+                getLv(item, lv, data[j][parentid]);
               }
               return ;
             }
