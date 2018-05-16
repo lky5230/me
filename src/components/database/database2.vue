@@ -327,7 +327,7 @@
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         :style="[rowItem[col.props].style]"
                         @click.stop="hideOption"
-                        @touchstart.stop="hideOption"
+                        @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         >
                         <div class="text nowrap">
                             {{rowItem[col.props].value}}
@@ -418,6 +418,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -459,6 +461,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -500,6 +504,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -542,6 +548,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -586,6 +594,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -626,6 +636,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -649,7 +661,7 @@
                           :style="[rowItem[col.props].style]"
                           @focus="hideOption"
                           @input="
-                            selectFullData = null;
+                            this.selectFullData = null;
                             modifyByRowCol(
                               rowItem._rowid, 
                               col.props, 
@@ -701,7 +713,7 @@
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         :style="[rowItem[col.props].style]"
                         @click.stop="hideOption"
-                        @touchstart.stop="hideOption"
+                        @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         >
                         <div class="text nowrap">
                             {{rowItem[col.props].value}}
@@ -792,6 +804,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -833,6 +847,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -874,6 +890,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -916,6 +934,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -960,6 +980,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
@@ -1000,6 +1022,8 @@
 
                         <div 
                           @click.stop="hideOption"
+                          @touchstart.stop
+                          @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
                           class="input-mask">
                         </div>
