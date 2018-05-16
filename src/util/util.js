@@ -103,8 +103,8 @@ Vue.prototype.utils = {
   jsonClone: function(obj){
     return JSON.parse(JSON.stringify(obj))
   },
+
   /*
-  *  @name 一维转化为多维
   *  [
   *   {id: 1, parentid: 0},
   *   {id: 2, parentid: 0},
@@ -112,7 +112,7 @@ Vue.prototype.utils = {
   *   {id: 123, parentid: 12}
   *  ]
   *   ===>【转化后添加了字段： _isleaf（0：有子数组，1：无子数组）, _level（层级）, _child（子数组）】
-  *   ===>【这里只演示添加_child字段】
+  *   ===>【这里只演示转化后，添加了_child字段】
   *  [
   *   {id: 1, parentid: 0, _child: [
   *     {id: 12, parentid: 1, _child: [
@@ -121,45 +121,60 @@ Vue.prototype.utils = {
   *   ]},
   *   {id: 2, parentid: 0, _child: []},
   *  ]
-  *  参数1：原始一维数组，参数2：id及parentid字段名称
+  *  ( 参数1：原始一维数组, 参数2：id及parentid字段名称 )
   */
-  cleanData: function(data,{id = 'id', parentid = 'parentid'} = {}){
+  cleanData: function(data, {id = 'id', parentid = 'parentid'} = {}){
     let vm = this;
     function cleanData(data) {
       let data2 = vm.jsonClone(data);
       let levelLength = 0;
       let clean = [];
       if (data2.length == 0) return [];
-      function convert(orgin) {
-        var result = arguments[1] ? arguments[1] : [];
-        var level = arguments[2] ? arguments[2] : 0;
-        var __parentid = arguments[3] ? arguments[3] : 0;
-        var isLeaf = function(_id) {
-          for (var x in orgin) {
-            if (orgin[x][parentid] == _id) {
-              return false;
+      
+      /*
+      * 增加 _isleaf、_level
+      */
+      function convert(data){
+        //增加 _isleaf
+        for(let i=0; i<data.length; i++){
+          data[i]._level = 0;
+          for(let j=i+1; j<data.length; j++){
+            if(data[i].id == data[j].parentid){
+              data[i]._isleaf = 0;
+              break;
             }
           }
-          return true;
+          if(data[i]._isleaf == undefined){
+            data[i]._isleaf = 1;
+          }
         };
-        for (var x in orgin) {
-          if (
-            orgin[x][parentid] == __parentid &&
-            orgin[x]["skip_012ea834e2aa011ef16f7d846889c026"] != 1
-          ) {
-            orgin[x]["_isleaf"] = isLeaf(orgin[x][id]) == true ? 1 : 0;
-            orgin[x]["_level"] = level;
-            result.push(JSON.parse(JSON.stringify(orgin[x]))); //对象深拷贝
-            orgin[x]["_skip_012ea834e2aa011ef16f7d846889c026"] = 1; //标记该节点不用再遍历
-            if (!isLeaf(orgin[x][id])) {
-              convert(orgin, result, level + 1, orgin[x][id]);
-            }
-          }
-        }
-        return result;
-      }
-      data2 = convert(data2);
+        //增加 _level
+        for(let i=0; i<data.length; i++){
+          if(data[i].parentid != 0){
+            getLv(data[i], 1, data[i].parentid);
+          };
+        };
 
+        function getLv(item, lv, pid){
+          for(let j=0; j<data.length; j++){
+            if(data[j].id == pid){
+              if(data[j].parentid == 0){
+                item._level = lv;
+                return ;
+              }else{
+                lv++;
+                getLv(item, lv, data[j].parentid);
+              }
+              return ;
+            }
+          };
+        };
+
+        return data;
+      };
+
+      data2 = convert(data2);
+      
       data2.forEach(item => {
         if (item._level > levelLength) {
           levelLength = item._level;

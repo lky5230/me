@@ -91,7 +91,7 @@ rowData = [{
     a3: {
         type: "select", //单选下拉
 
-        url: '/public/select.json', //单选下拉的请求的url（必需），且请求结果格式是[{id: ?, name: ?}, ...]
+        url: '/select.json', //单选下拉的请求的url（必需），且请求结果格式是[{id: ?, name: ?}, ...]
         dataPos: 'data.result', // 请求结果在res.data.data.result中，默认'data.result'
         dataTotal: 'data.total', // 当option分页时，表示请求的总数在res.data.data.total中，默认'data.total'
         value: 'name-3',//（必需）
@@ -100,7 +100,7 @@ rowData = [{
     },
     a4: {
         type: "mul_select", //多选下拉
-        url: '/public/select.json', //（必需）
+        url: '/select.json', //（必需）
         dataPos: 'data.result',
         dataTotal: 'data.total',
         value: ['name-2', 'name-3', 'name-4'], //多选下拉的值，必须是数组类型（必需）
@@ -240,14 +240,14 @@ entry = {
     },
     a3: {
         type: "select",
-        url: '/public/select.json',
+        url: '/select.json',
         dataPos: 'data.result',
         value: '',
         id: ''
     },
     a4: {
         type: "mul_select",
-        url: '/public/select.json',
+        url: '/select.json',
         dataPos: 'data.result',
         // 注意多选的value、id 必须是数组！
         value: function(){

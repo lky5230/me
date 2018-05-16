@@ -8,11 +8,14 @@
 import flow2 from './flow2.vue'
 export default {
     components: {flow2},
+    created(){
+      console.log(process.env.VUE_APP_BASEURL)
+    },
     methods: {
       save(e){
         console.log(e)
       }
-    }
+    },
 }
 </script>
 

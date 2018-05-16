@@ -18,7 +18,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI)
 
 //表格组件
-import database from '@/components/database/database'
+import database from '@/components/database/database2'
 Vue.component('database', database)
 
 //css

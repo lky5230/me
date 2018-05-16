@@ -66,7 +66,7 @@
     </el-scrollbar>
     <div class="thump">
       <div class="thump-title" v-show="!$store.state.isExpand">
-        create by SDA
+        create by 向日葵
       </div>
       <i
         @click="$store.commit('setExpand')"

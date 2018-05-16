@@ -1,0 +1,79 @@
+{
+    "data": {
+        "result": [
+            {
+                "id": 1,
+                "name": "流程图 - demo",
+                "url": "/flow",
+                "parentid": 0,
+                "icon": "fa fa-code-fork"
+            },
+            {
+                "id": 2,
+                "name": "表格 - demo",
+                "url": "/database",
+                "parentid": 0,
+                "icon": "fa fa-database"
+            },
+
+            {
+                "id": 3,
+                "name": "1级-001",
+                "url": "/",
+                "parentid": 0,
+                "icon": ""
+            },
+            {
+                "id": 4,
+                "name": "1级-002",
+                "url": "/",
+                "parentid": 0,
+                "icon": ""
+            },
+            {
+                "id": 5,
+                "name": "2级-001",
+                "url": "/",
+                "parentid": 3,
+                "icon": ""
+            },
+            {
+                "id": 6,
+                "name": "2级-002",
+                "url": "/",
+                "parentid": 3,
+                "icon": ""
+            },
+            {
+                "id": 7,
+                "name": "2级-003",
+                "url": "/",
+                "parentid": 4,
+                "icon": ""
+            },
+            {
+                "id": 8,
+                "name": "3级-001",
+                "url": "/",
+                "parentid": 7,
+                "icon": ""
+            },
+            
+            {
+                "id": 9,
+                "name": "3级-002",
+                "url": "/",
+                "parentid": 7,
+                "icon": ""
+            },
+            {
+                "id": 10,
+                "name": "3级-003",
+                "url": "/",
+                "parentid": 7,
+                "icon": ""
+            }
+
+        ]
+    }
+}

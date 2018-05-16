@@ -186,6 +186,7 @@
                     transform: 'translate(0px, '+ -1*geScrollTopArea +'px)'
                 }">
 
+              <transition-group name="sheet">
                 <!-- (y轴方向的动态渲染) -->
                 <div 
                   class="sheet-line"
@@ -259,47 +260,49 @@
                     <!-- 表体-操作列 -->
                     <div 
                       v-if="showOperate"
-                      class="tbl-cell check-cell clearfix" 
+                      class="tbl-cell check-cell clearfix"
+                      :ref="'operate-'+rowItem._rowid"
+                      @click.stop
                       :style="{
                         height: cellHeight + 'px',
                         left: (showStatus? +statusWidth: 0) + (showCheckBoxAndIndex? 40: 0) + 'px',
-                        width: 40 + 'px',
+                        width: '40px',
                         position: 'relative',
                       }">
-                      <!-- 加 -->
-                      <i 
-                        @click="operateFn('add', rowItem)" 
-                        title="向下加一行" 
-                        class="operate-add">
-                        <i class="fa fa-plus"></i>
-                      </i>
-                      <!-- 减 -->
-                      <i 
-                        @click="operateFn('remove', rowItem)" 
-                        title="删除该行" 
-                        class="operate-remove">
-                        <i class="fa fa-minus"></i>
-                      </i>
-                      <!-- 上移 -->
-                      <i 
-                        @click="operateFn('up', rowItem)" 
-                        title="向上移动" 
-                        class="operate-top"
+                      
+                      <div
+                        class="operate-cir"
                         :class="{
-                          'ban': rowLine == 0
-                        }">
-                        <i class="fa fa-angle-up"></i>
-                      </i>
-                      <!-- 下移 -->
-                      <i 
-                        @click="operateFn('down', rowItem)" 
-                        title="向下移动" 
-                        class="operate-bottom"
-                        :class="{
-                          'ban': rowLine == row.length - 1
-                        }">
-                        <i class="fa fa-angle-down"></i>
-                      </i>
+                          activeOperate: operate_show && operate_info._rowid == rowItem._rowid
+                        }"
+                        @click="operateShowFn(rowItem)">
+                        <i class="fa fa-list"></i>
+                      </div>
+
+                      <div
+                        v-show="operate_show"
+                        style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;opacity: 0; z-index: 100;"
+                        @click="operate_show = false">
+                      </div>
+
+                      <!-- loading -->
+                      <div 
+                        class="operate_loading" 
+                        @click.stop
+                        v-show="operate_loading['loading' + rowItem._rowid]">
+                        <div class="skype-loader">
+                          <div 
+                            v-for="n in 4"
+                            :key="'dot-'+n"
+                            class="dot" 
+                            :class="{
+                              'save': operate_loading['loading-type-'+rowItem._rowid] == 'save',
+                              'remove': operate_loading['loading-type-'+rowItem._rowid] == 'remove'
+                            }">
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                     
                     <div
@@ -454,7 +457,7 @@
                           @blur.stop
                         />
 
-                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'select')" class="fa fa-times-circle edit-close"></i>
+                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
                           @click.stop="hideOption"
@@ -495,7 +498,7 @@
                           @blur.stop
                         />
 
-                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'select')" class="fa fa-times-circle edit-close"></i>
+                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_mul_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
                           @click.stop="hideOption"
@@ -828,7 +831,7 @@
                           @blur.stop
                         />
 
-                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'select')" class="fa fa-times-circle edit-close"></i>
+                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
                           @click.stop="hideOption"
@@ -869,7 +872,7 @@
                           @blur.stop
                         />
 
-                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'select')" class="fa fa-times-circle edit-close"></i>
+                        <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_mul_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
                           @click.stop="hideOption"
@@ -1038,6 +1041,7 @@
                   </div>
 
                 </div>
+              </transition-group>
 
             </div>
 
@@ -1347,6 +1351,47 @@
       </div>
     </transition>
 
+    <!-- 操作选择 -->
+    <transition name="option">
+      <div
+        class="option"
+        @click.stop
+        @mousewheel.stop
+        @mouseover.stop
+        @touchstart.stop
+        v-show="operate_show"
+        :style="{
+          left: operate_left + 'px',
+          top: operate_top + 'px',
+          width: 120 + 'px',
+          transition: 'all .17s linear',
+        }">
+        <div class="arrow"></div>
+        <div class="operate-item-wrap">
+          <div class="operate-item" @click="operateFn('save')">
+            <i class="fa fa-floppy-o"></i>&nbsp;&nbsp;
+            保存
+          </div>
+          <div class="operate-item" @click="operateFn('add')">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;
+            增加一行
+          </div>
+          <div class="operate-item" @click="operateFn('remove')">
+            <i class="fa fa-minus"></i>&nbsp;&nbsp;
+            删除该行
+          </div>
+          <div class="operate-item" @click="operateFn('up')">
+            <div class="fa fa-caret-up"></div>&nbsp;&nbsp;
+            向上移动
+          </div>
+          <div class="operate-item" @click="operateFn('down')">
+            <div class="fa fa-caret-down"></div>&nbsp;&nbsp;
+            向下移动
+          </div>
+        </div>
+      </div>
+    </transition>
+  
   </div>
 </template>
 
@@ -1467,6 +1512,14 @@ export default {
       //触摸距离
       _optionCanShowDisX: 0,
       _optionCanShowDisY: 0,
+
+      // 操作列下拉
+      operate_show: false,
+      operate_left: 0, 
+      operate_top: 0,
+      operate_info: {},
+      operate_loading: {},
+
     };
   },
 
@@ -2020,6 +2073,7 @@ export default {
       this.option_show = false;
       this.dataPicker_show = false;
       this.timePicker_show = false;
+      this.operate_show = false;
       let vm = this;
       let left, offsetX, top, offsetY;
       if (type == "x") {
@@ -2060,6 +2114,7 @@ export default {
       this.option_show = false;
       this.dataPicker_show = false;
       this.timePicker_show = false;
+      this.operate_show = false;
       let height = this.height - this.colRelMaxLevel * this.cellHeight;
       //无滚动条不需要滚动
       if(height * height / this.fullHeight >= this.height - this.cellHeight * this.colRelMaxLevel) return ;
@@ -2197,8 +2252,10 @@ export default {
       inp.focus();
     },
     //操作列的增、删、移动操作
-    operateFn(type, rowItem){
+    operateFn(type){
+      let rowItem = this.operate_info;
       let row = this.jsonClone(this.getTable().row);
+      let vm = this;
       switch (type) {
         case 'add':
           if(this.entry != false && JSON.stringify(this.entry) != '{}'){
@@ -2229,14 +2286,33 @@ export default {
           }
           break;
         case 'remove':
-          for(let i=0; i<row.length; i++){
-            if(row[i]._rowid == rowItem._rowid){
-              row.splice(i, 1);
-              break ;
+          this.operate_show = false;
+          this.$set(this.operate_loading, 'loading'+rowItem._rowid, true);
+          this.$set(this.operate_loading, 'loading-type-'+rowItem._rowid, 'remove');
+
+          let success = function(){
+            row = this.jsonClone(this.getTable().row);
+            for(let i=0; i<row.length; i++){
+              if(row[i]._rowid == rowItem._rowid){
+                row.splice(i, 1);
+                break ;
+              }
             }
-          }
-          this.row = row;
-          break;
+            this.row = row;
+            this.$set(this.operate_loading, 'loading'+rowItem._rowid, false);
+          };
+
+          let faild = function(){
+            this.$set(this.operate_loading, 'loading'+rowItem._rowid, false);
+          };
+
+          this.$emit('removeLine', {
+            data: rowItem,
+            success: success.bind(this),
+            faild: faild.bind(this),
+          });
+          
+          return;
         case 'up':
           for(let i=0; i<row.length; i++){
             if(row[i]._rowid == rowItem._rowid){
@@ -2261,7 +2337,87 @@ export default {
           }
           this.row = row;
           break;
+        case 'save':
+          this.operate_show = false;
+          let getTitleByProps = function(props){
+            for(let i=0; i<vm.col.length; i++){
+              if(vm.col[i].props == props){
+                return vm.col[i].title;
+              }
+            }
+          };
+          for(let i=0; i<this.row.length; i++){
+            if(rowItem._rowid == this.row[i]._rowid){
+              for(let [key, attr] of Object.entries(this.row[i])){
+                if(attr.required == true){
+                  if(attr.type == 'number'){
+                    if(isNaN(attr.value)){
+                      let msg = getTitleByProps(key);
+                      this.row[i]._error = true;
+                      this.$emit('saveLine', {
+                        status: 'checkFail',
+                        msg: '第'+ (i * 1 + 1) + '行，' + msg + '列 不能为空！'
+                      })
+                      return ;
+                    }
+                  }else{
+                    if((attr.value+'').trim() == ''){
+                      let msg = getTitleByProps(key);
+                      this.row[i]._error = true;
+                      this.$emit('saveLine', {
+                        status: 'checkFail',
+                        msg: '第'+ (i * 1 + 1) + '行，' + msg + '列 不能为空！'
+                      })
+                      return ;
+                    }
+                  }
+                }
+              };
+              break ;
+            }
+          };
+          
+          this.$set(this.operate_loading, 'loading'+rowItem._rowid, true);
+          this.$set(this.operate_loading, 'loading-type-'+rowItem._rowid, 'save');
+
+          let complate = function(){
+            this.$set(this.operate_loading, 'loading'+rowItem._rowid, false);
+          };
+
+          this.$emit('saveLine', {
+            status: 'checkSuccess',
+            data: rowItem,
+            complate: complate.bind(this)
+          });
+
+          return ;
       };
+      //重新定位悬浮框位置
+      this.$nextTick(()=>{
+        setTimeout(()=>{
+          this.operateShowFn(rowItem);
+        }, 166);
+      })
+    },
+    //显示操作option
+    operateShowFn(rowItem){
+      let dom = this.$refs['operate-'+rowItem._rowid];
+      if(dom instanceof Array){
+        dom = dom[0];
+      };
+      this.dataPicker_show = false;
+      this.timePicker_show = false;
+      this.option_show = false;
+
+      let rect = dom.getBoundingClientRect();
+      let rect2 = this.$refs.container.getBoundingClientRect();
+
+      //option的处理
+      let left = rect.left - rect2.left - 5;
+      this.operate_left = left;
+      this.operate_top = rect.top - rect2.top + rect.height + 8;
+      this.operate_info = rowItem;
+      this.operate_show = true;
     },
 
     /**
@@ -2377,11 +2533,11 @@ export default {
     //下拉input的close
     selectClose(row, col, type){
       this.selectFullData = 'close';
-      if(type == 'mul_select'){
+      if(type == 'mul_select' || type == 'opt_mul_select'){
         this.modifyByRowCol(row._rowid, col.props, [], []);
-      }else if(type == 'select'){
+      }else if(type == 'select' || type == 'opt_select'){
         this.modifyByRowCol(row._rowid, col.props, '', '');
-      }else if(type == 'date' || type == 'time'){
+      }else if(type == 'date' || type == 'time' || type == 'datetime'){
         this.modifyByRowCol(row._rowid, col.props, '');
       }
       this.hideOption();
@@ -2395,6 +2551,7 @@ export default {
       };
       this.dataPicker_show = false;
       this.timePicker_show = false;
+      this.operate_show = false;
       //先全部选中
       dom.querySelector('input').select();
 
@@ -2477,6 +2634,8 @@ export default {
     opt_searchFocus(row, col, isMul){
       let dom = this.$refs['cell-'+row._rowid+'-'+col._colid];
       this.dataPicker_show = false;
+      this.timePicker_show = false;
+      this.operate_show = false;
       if(dom instanceof Array){
         dom = dom[0];
       };
@@ -2545,6 +2704,7 @@ export default {
       //隐藏option的DOM下拉
       this.option_show = false;
       this.timePicker_show = false;
+      this.operate_show = false;
       //先全部选中
       dom.querySelector('input').select();
 
@@ -3117,6 +3277,7 @@ export default {
       this.option_show = false;
       this.dataPicker_show = false;
       this.timePicker_show = false;
+      this.operate_show = false;
     },
     //表格最后增加一行
     addLine(){
@@ -3742,7 +3903,7 @@ export default {
 /* 其他 */
 .sheet-header-right .tbl-cell,
 .sheet-header-left .tbl-cell {
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #f3f3f3;
   background: #fefefe;
 }
 .sheet-header-right .tbl-cell:nth-last-of-type(1){
@@ -4503,5 +4664,94 @@ input::input-placeholder {
 .status-error.status-modify,
 .status-error.status-add{
   background: #ff4f43 !important;
+}
+.operate-item{
+  height: 32px;
+  line-height: 32px;
+  text-indent: 8px;
+  color: #878787;
+  font-size: 14px;
+  cursor: pointer;
+}
+.operate-item:hover{
+  background: #f1f1f1;
+  color: #00abff;
+}
+.operate-cir{
+  position: absolute; 
+  z-index: 98;
+  left: 0px; 
+  top: 0px; 
+  width: 40px; 
+  height: 40px; 
+  line-height: 40px;
+  text-align: center; 
+  color: #d3d3d3;
+  transition: all .3s;
+  font-size: 14px;
+}
+.operate_loading{
+  position: absolute; 
+  z-index: 101;
+  left: 0px; 
+  top: 0px; 
+  width: 39px; 
+  height: 40px;
+  background: #fff;
+}
+.skype-loader{
+    width: 24px;
+    height: 24px;
+    position: relative;
+    margin: 8px auto;
+}
+.skype-loader .dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    animation: 1.3s dotrotate cubic-bezier(.63,1.36,.92,.92) infinite;
+}
+.skype-loader .dot:after {
+    content: " ";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #999;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.skype-loader .dot.save:after{
+    background: #08f76b;
+}
+.skype-loader .dot.remove:after{
+    background: #ff5858;
+}
+.skype-loader .dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.skype-loader .dot:nth-child(2) {
+    animation-delay: 0.12s;
+}
+.skype-loader .dot:nth-child(3) {
+    animation-delay: 0.24s;
+}
+.skype-loader .dot:nth-child(4) {
+    animation-delay: 0.36s;
+}
+@keyframes dotrotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.operate-cir:hover,
+.activeOperate.operate-cir{
+  color: #00abff;
+}
+.sheet-move {
+  transition: transform .16s;
 }
 </style>

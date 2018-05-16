@@ -8,7 +8,7 @@
     <!-- logo -->
     <div class="logo">
       <img :src="require('./logo.svg')" alt="logo">
-      <span>&nbsp;向日癸XXX</span>
+      <span>&nbsp;向日癸</span>
     </div>
 
     <!-- 右侧 -->

@@ -3,7 +3,7 @@
 
     <div class="logo">
       <img :src="require('./logo.svg')" alt="logo">
-      <span>向日癸XXX</span>
+      <span>向日癸</span>
     </div>
 
     <div class="nav clearfix">

@@ -333,7 +333,7 @@
             <svg width="100%" height="100%">
 
                 <defs>
-                    <filter id="f4" x="0" y="0" width="200%" height="200%">
+                    <filter id="f4" x="0" y="0" width="300%" height="300%">
                         <feOffset result="offOut" in="SourceAlpha" dx="20" dy="20" />
                         <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
                         <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
@@ -462,9 +462,9 @@
 <script>
 import './iconfont1.js'
 import './iconfont2.js'
-/*  
-    图层
+/*
     贝塞尔曲线绘制
+    键盘移动
 */
 
 
@@ -646,7 +646,7 @@ export default {
             dragMoveX: 0,
             dragMoveY: 0,
 
-            //选中的元素集合（图形、线条、文本），若只有一个元素则可以进行（编辑、拖动）等操作
+            //选中的元素集合（图形、线条、文本），若只有一个元素则可以进行编辑，鼠标拖动操作
             selected: [],
             //粘贴板
             clipboard: [],
@@ -1493,6 +1493,45 @@ export default {
             this.textData = textData;
             this.recordAdd();
         },
+        //键盘移动元素
+        moveMap(type){
+            let v = 0, 
+                h = 0;
+            switch (type) {
+                case 'up':
+                    v = -1
+                    break;
+                case 'down':
+                    v = 1
+                    break;
+                case 'left':
+                    h = -1
+                    break;
+                case 'right':
+                    h = 1
+                    break;
+            };
+            let flowData = this.jsonClone(this.flowData);
+            let textData = this.jsonClone(this.textData);
+            for(let i=0; i<this.selected.length; i++){
+                //flowData
+                for(let m=0; m<flowData.length; m++){
+                    if(flowData[m].id == this.selected[i]){
+                        flowData[m].x += h
+                        flowData[m].y += v
+                    }
+                }
+                //textData
+                for(let m=0; m<textData.length; m++){
+                    if(textData[m].id == this.selected[i]){
+                        textData[m].x += h
+                        textData[m].y += v
+                    }
+                }
+            };
+            this.flowData = flowData;
+            this.textData = textData;
+        },
 
         /*
         * 【键盘按下、松开】
@@ -1534,18 +1573,22 @@ export default {
             //上
             if(e.keyCode == 38){
                 this.up = true;
+                this.moveMap('up');
             }
             //下
             if(e.keyCode == 40){
                 this.down = true;
+                this.moveMap('down');
             }
             //左
             if(e.keyCode == 37){
                 this.left = true;
+                this.moveMap('left');
             }
             //右
             if(e.keyCode == 39){
                 this.right = true;
+                this.moveMap('right');
             }
 
             //ctrl+Z 撤销

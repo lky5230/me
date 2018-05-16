@@ -25,6 +25,8 @@
           :showOptionPage="showOptionPage"
           @selectChange="selectChange"
           @dateChange="dateChange"
+          @saveLine="saveLine"
+          @removeLine="removeLine"
         >
         </database>
       </div>
@@ -374,7 +376,7 @@ export default {
           dataTotal: 'data.total',
           
           value: '',
-          required: true,
+          // required: true,
           id: ''
         },
         a4: {
@@ -833,7 +835,32 @@ export default {
     //重置表格数据
     reset(){
       this.$refs.database.doReset(true)
-    }
+    },
+
+
+    //单行保存时
+    saveLine(e){
+      console.log(e)
+      if(e.status == 'checkSuccess'){
+        setTimeout(()=>{
+          /*
+          * 成功后 getTable
+          * 然后通过 _rowid找到对应项
+          * 进行 _add、_modify、_error或id字段的修改
+          * 再执行complate回调，关闭loading
+          */
+          e.complate()
+        }, 4500)
+      }
+    },
+    //单行删除时
+    removeLine(e){
+      setTimeout(()=>{
+          //成功执行 success，失败执行 faild
+          e.success()
+        }, 4500)
+    },
+
 
   },
   // components: {database}

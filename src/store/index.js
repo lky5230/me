@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '@/router'
 import localforage from 'localforage'
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   
   state: {
     //应用本地存储的唯一标记
-    appid: 'app-me-2018-08-08',
+    appid: process.env.VUE_APP_APPID,
     //移动端(phone)、电脑端(pc)
     browerType: 'pc',
     //原始菜单
@@ -20,7 +20,7 @@ const store = new Vuex.Store({
     /* 
     * 侧边栏类型('left', 'hover')
     */
-    sidebarType: 'left',
+    sidebarType: process.env.VUE_APP_SIDEBAR,
     //'left'类型侧边栏（只和'left'类型侧边栏搭配）-是否展开
     isExpand: false,
     
@@ -30,9 +30,14 @@ const store = new Vuex.Store({
     //扁平化（添加_fullPathName）的一体化菜单
     fullMenu(state){
       let data = Vue.prototype.utils.cleanData(state.menu);
-      let arr = [], temp = [], endIndex = 0;
+      let arr = [], 
+          temp = [], 
+          endIndex = 0;
+
       cleanTree(data, 0);
+
       return arr;
+
       function cleanTree(data, level){
         for(let i=0; i<data.length; i++){
           temp[level] = data[i].name;
@@ -44,6 +49,7 @@ const store = new Vuex.Store({
           }
         }
       };
+      
     },
     
   },
@@ -119,6 +125,8 @@ const store = new Vuex.Store({
     * 菜单项-点击
     */
     menuClick({state, commit}, menu){
+      //跳转路由
+      router.push(menu.url);
       console.log(menu)
     },
 
