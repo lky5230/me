@@ -124,10 +124,18 @@ const store = new Vuex.Store({
     /*
     * 菜单项-点击
     */
-    menuClick({state, commit}, menu){
+    menuClick({state, commit, getters, dispatch}, menu){
       //跳转路由
       router.push(menu.url);
-      console.log(menu)
+      
+      //保存历史记录
+      for(let i=0; i<getters.fullMenu.length; i++){
+        if(getters.fullMenu[i].id == menu.id){
+          dispatch('saveSearchHistory', getters.fullMenu[i])
+          break ;
+        }
+      };
+      
     },
 
   },

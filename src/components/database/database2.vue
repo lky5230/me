@@ -6,12 +6,13 @@
       option_show = false; 
       dataPicker_show = false; 
       timePicker_show = false;
+      operate_show = false;
     "
     :key="reset" 
     class="tbl-wrap tbl-wrap-id-2018-03-26">
 
     <span ref="textLengtn" style="display: inline-block; position: absolute; z-index: -99; font-size: 13px; background: transparent; opacity: 0;"></span>
-
+    
     <!-- 滚动区域 -->
     <div 
         ref="container" 
@@ -24,7 +25,7 @@
         }">
 
         <div class="body">
-
+            <!-- <div style="position: absolute; z-index: 99999">{{log}}</div> -->
             <div v-if="row.length == 0" class="no-text">暂无数据</div>
 
             <!-- //专门撑出滚动条的DOM// -->
@@ -86,6 +87,7 @@
 
                   <i 
                     @click.stop="addLine" 
+                    @touchstart.stop="addLine"
                     class="entry-add"
                     v-if="entry"
                     title="向表格末尾增加一行">
@@ -263,6 +265,8 @@
                       class="tbl-cell check-cell clearfix"
                       :ref="'operate-'+rowItem._rowid"
                       @click.stop
+                      @touchstart.stop
+                      @touchend.stop
                       :style="{
                         height: cellHeight + 'px',
                         left: (showStatus? +statusWidth: 0) + (showCheckBoxAndIndex? 40: 0) + 'px',
@@ -275,14 +279,8 @@
                         :class="{
                           activeOperate: operate_show && operate_info._rowid == rowItem._rowid
                         }"
-                        @click="operateShowFn(rowItem)">
+                        @click="operateShowFn(rowItem);">
                         <i class="fa fa-list"></i>
-                      </div>
-
-                      <div
-                        v-show="operate_show"
-                        style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;opacity: 0; z-index: 100;"
-                        @click="operate_show = false">
                       </div>
 
                       <!-- loading -->
@@ -1364,7 +1362,7 @@
           left: operate_left + 'px',
           top: operate_top + 'px',
           width: 120 + 'px',
-          transition: 'all .17s linear',
+          transition: 'all 0s, top .17s, scaleY .17s;',
         }">
         <div class="arrow"></div>
         <div class="operate-item-wrap">
@@ -1372,7 +1370,7 @@
             <i class="fa fa-floppy-o"></i>&nbsp;&nbsp;
             保存
           </div>
-          <div class="operate-item" @click="operateFn('add')">
+          <div v-show="entry" class="operate-item" @click="operateFn('add')">
             <i class="fa fa-plus"></i>&nbsp;&nbsp;
             增加一行
           </div>
@@ -1519,6 +1517,10 @@ export default {
       operate_top: 0,
       operate_info: {},
       operate_loading: {},
+
+      //方法调用的log日志
+      log: [],
+      startLog: true,
 
     };
   },
@@ -1915,8 +1917,14 @@ export default {
     print(m){
       window.console.log(m)
     },
+    logFn(m){
+      if(this.startLog){
+        this.log.push(m)
+      }
+    },
     // 初始化
     init() {
+      this.logFn('init')
       this.row = this.deepClone(this.rowData);
       this.col = this.deepClone(this.colData);
       this.colRel = this.deepClone(this.colRelation);
@@ -2002,6 +2010,7 @@ export default {
     },
     // 修复容器的高度、宽度
     fixedWidthHeight() {
+      this.logFn('fixedWidthHeight')
       let wrap = this.$refs.wrap;
       if (wrap instanceof Array) {
         wrap = wrap[0];
@@ -2012,6 +2021,7 @@ export default {
     },
     // 检查列总宽度是否为容器宽度，并且最后一列会把宽度设置合适
     fixLastCol(col){
+      this.logFn('fixLastCol')
       if(!col || col.length == 0) return ;
       let col2 = this.jsonClone(col);
       let colWillWidth = 0;
@@ -2041,6 +2051,7 @@ export default {
     },
     // 日期时间的placeholder
     placeholder_date(type){
+      this.logFn('placeholder_date')
       if(type == 'date'){
         return 'yyyy-MM-dd';
       }
@@ -2059,6 +2070,7 @@ export default {
     },
     // 表体-复选框的切换
     checkBox(row){
+      this.logFn('checkBox')
       for (let i = 0; i < this.row.length; i++) {
         if (this.row[i]._rowid == row._rowid) {
           this.row[i].checked = !this.row[i].checked;
@@ -2069,6 +2081,7 @@ export default {
     },
     // 滚动条-拖拽按下
     scrollMouseDown(e, type) {
+      this.logFn('scrollMouseDown')
       e.preventDefault();
       this.option_show = false;
       this.dataPicker_show = false;
@@ -2111,6 +2124,7 @@ export default {
     },
     // 滚动条-鼠标滚轮
     mousewheel(e) {
+      this.logFn('mousewheel')
       this.option_show = false;
       this.dataPicker_show = false;
       this.timePicker_show = false;
@@ -2163,6 +2177,7 @@ export default {
     },
     // 触摸开始
     touchstart(e) {
+      this.logFn('touchstart')
       this._optionCanShowDisX = 0;
       this._optionCanShowDisY = 0;
       e.preventDefault();
@@ -2177,6 +2192,7 @@ export default {
     },
     // 触摸移动
     touchmove(e) {
+      this.logFn('touchmove')
       e.preventDefault();
       let endx = Math.floor(e.changedTouches[0].pageX);
       let endy = Math.floor(e.changedTouches[0].pageY);
@@ -2232,6 +2248,7 @@ export default {
     },
     // 触摸结束
     touchend(e) {
+      this.logFn('touchend')
       e.preventDefault();
       let block = this.$refs.container;
       block.removeEventListener("touchmove", this.touchmove);
@@ -2239,6 +2256,7 @@ export default {
     },
     // input框在移动端的touchend
     inpTouchEnd(rowid, colid){
+      this.logFn('inpTouchEnd')
       //触摸移动状态就不出现option
       if(this._optionCanShowDisX > 15 || this._optionCanShowDisY>15){
         return ;
@@ -2253,6 +2271,7 @@ export default {
     },
     //操作列的增、删、移动操作
     operateFn(type){
+      this.logFn('operateFn')
       let rowItem = this.operate_info;
       let row = this.jsonClone(this.getTable().row);
       let vm = this;
@@ -2395,12 +2414,13 @@ export default {
       //重新定位悬浮框位置
       this.$nextTick(()=>{
         setTimeout(()=>{
-          this.operateShowFn(rowItem);
+          this.operateShowFn(rowItem, true);
         }, 166);
       })
     },
     //显示操作option
-    operateShowFn(rowItem){
+    operateShowFn(rowItem, isShow){
+      this.logFn('operateShowFn')
       let dom = this.$refs['operate-'+rowItem._rowid];
       if(dom instanceof Array){
         dom = dom[0];
@@ -2417,13 +2437,18 @@ export default {
       this.operate_left = left;
       this.operate_top = rect.top - rect2.top + rect.height + 8;
       this.operate_info = rowItem;
-      this.operate_show = true;
+      if(isShow != undefined){
+        this.operate_show = isShow;
+      } else {
+        this.operate_show = !this.operate_show;
+      }
     },
 
     /**
     * @description 修改this.row对应项
     */
     modifyByRowCol(rowid, props, val, id) {
+      this.logFn('modifyByRowCol')
       for (let i = 0; i < this.row.length; i++) {
         if (this.row[i]._rowid == rowid) {
           this.row[i][props].value = val;
@@ -2457,6 +2482,7 @@ export default {
     },
     //数字框-验证
     checkNumber(row, col, val){
+      this.logFn('checkNumber')
       val *= 1;
       if(row[col.props].min != undefined){
         if(val < row[col.props].min){
@@ -2476,6 +2502,7 @@ export default {
     },
     //日期、时间、日期时间、年、月-验证
     checkDate(row, col, val, type){
+      this.logFn('checkDate')
       // 日期 正则
       let dateReg = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
       // 时间 正则
@@ -2532,6 +2559,7 @@ export default {
     },
     //下拉input的close
     selectClose(row, col, type){
+      this.logFn('selectClose')
       this.selectFullData = 'close';
       if(type == 'mul_select' || type == 'opt_mul_select'){
         this.modifyByRowCol(row._rowid, col.props, [], []);
@@ -2545,6 +2573,7 @@ export default {
 
     //单选下拉-（聚焦+远程搜索）
     searchFocus(row, col, isMul){
+      this.logFn('searchFocus')
       let dom = this.$refs['cell-'+row._rowid+'-'+col._colid];
       if(dom instanceof Array){
         dom = dom[0];
@@ -2632,6 +2661,7 @@ export default {
     },
     //有option的单/多选下拉
     opt_searchFocus(row, col, isMul){
+      this.logFn('opt_searchFocus')
       let dom = this.$refs['cell-'+row._rowid+'-'+col._colid];
       this.dataPicker_show = false;
       this.timePicker_show = false;
@@ -2697,6 +2727,7 @@ export default {
 
     //日期选择datapicker-聚焦
     dataPickerFocus(row, col){
+      this.logFn('dataPickerFocus')
       let dom = this.$refs['cell-'+row._rowid+'-'+col._colid];
       if(dom instanceof Array){
         dom = dom[0];
@@ -2729,6 +2760,7 @@ export default {
     },
     //选择日期选择某项
     datapickerClick(date){
+      this.logFn('datapickerClick')
       this.selectFullData = null;
       if(this.dataPicker_info.row[this.dataPicker_info.col.props].type == 'datetime'){
         // 现在btn
@@ -2803,12 +2835,14 @@ export default {
     },
     //日期选择datapicker-年份
     dateYear(del){
+      this.logFn('dateYear')
       let d = this.dataPicker_date.split('-');
       let year = +d[0] + del;
       this.dataPicker_date = [year, d[1], d[2]].join('-');
     },
     //日期选择datapicker-月份
     dateMonth(del){
+      this.logFn('dateMonth')
       if(this.dataPicker_info.row[this.dataPicker_info.col.props].type == 'datetime'){
         let old_yyyy = new Date(this.dataPicker_date).format('yyyy');
         let old_MM = new Date(this.dataPicker_date).format('MM');
@@ -2859,6 +2893,7 @@ export default {
     },
     //改变时分秒
     dateTimeHMSFn(e, type){
+      this.logFn('dateTimeHMSFn')
       let val = +e.target.value;
       
       let old_yyyy = new Date(this.dataPicker_date).format('yyyy');
@@ -2910,6 +2945,7 @@ export default {
 
     //时间选择器-聚焦
     timePickerFocus(row, col){
+      this.logFn('timePickerFocus')
       let dom = this.$refs['cell-'+row._rowid+'-'+col._colid];
       if(dom instanceof Array){
         dom = dom[0];
@@ -2967,6 +3003,7 @@ export default {
     },
     //时间选择调整fn
     timePickerFn(type, delta, setVal){
+      this.logFn('timePickerFn')
       if(type == 'h'){
         let h = +this.timePickerComputed.h + delta;
         if(setVal != undefined){
@@ -3012,6 +3049,7 @@ export default {
     },
     //点击现在按钮
     timePickerBtnNow(){
+      this.logFn('timePickerBtnNow')
       let now = new Date().format('hh:mm:ss');
       this.timePicker_time.h = now.split(':')[0];
       this.timePicker_time.m = now.split(':')[1];
@@ -3020,6 +3058,7 @@ export default {
     },
     // timepicker按钮
     timePickerBtn(type){
+      this.logFn('timePickerBtn')
       let time = bu(this.timePicker_time.h)+':'+bu(this.timePicker_time.m)+':'+bu(this.timePicker_time.s);
       if(type == 'clear'){
         time = ''
@@ -3046,6 +3085,7 @@ export default {
     },
     //切换am、pm，改变小时的数值
     timeTypeChange(){
+      this.logFn('timeTypeChange')
       this.timeType = !this.timeType;
       let h = +this.timePicker_time.h;
       if(this.timeType){
@@ -3067,6 +3107,7 @@ export default {
 
     //输入框输入时搜索
     searchInput(e){
+      this.logFn('searchInput')
       let row = this.option_info.row;
       let col = this.option_info.col;
       let isMul = false;
@@ -3125,6 +3166,7 @@ export default {
     },
     //输入框的下拉项分页切换
     searchByPage(count){
+      this.logFn('searchByPage')
       let row = this.option_info.row;
       let col = this.option_info.col;
       let isMul = false;
@@ -3181,6 +3223,7 @@ export default {
     },
     //option下拉-选择某项
     optionItemClick(d){
+      this.logFn('optionItemClick')
       this.selectFullData = d;
       let type = this.option_info.row[this.option_info.col.props].type;
       if(type == 'mul_select' || type == 'opt_mul_select'){
@@ -3246,6 +3289,7 @@ export default {
     },
     //option远程搜索
     searchRemote(row){
+      this.logFn('searchRemote')
       if(!row.url){
         return Promise.reject('缺失url！');
       };
@@ -3273,6 +3317,7 @@ export default {
     },
     //隐藏option
     hideOption(){
+      this.logFn('hideOption')
       this.hover_show = false;
       this.option_show = false;
       this.dataPicker_show = false;
@@ -3281,6 +3326,7 @@ export default {
     },
     //表格最后增加一行
     addLine(){
+      this.logFn('addLine')
       if(this.entry != false && JSON.stringify(this.entry) != '{}'){
         let entry = this.deepClone(this.entry);
         entry.checked = false;
@@ -3307,15 +3353,18 @@ export default {
     },
     //调整布局
     doLayout(){
+      this.logFn('doLayout')
       this.fixedWidthHeight();
       this.scrollLeft = 0;
     },
     fixWindowResize(){
+      this.logFn('fixWindowResize')
       this.fixedWidthHeight();
       this.scrollLeft = 0;
     },
     //重置(参数：是否回到第一行第一列)
     doReset(bool){
+      this.logFn('doReset')
       this.reset = Date.now();
       if(bool){
         this.scrollTop = 0;
@@ -3327,6 +3376,7 @@ export default {
     },
     //获取表格信息（新增、错误、修改过的、所有）
     getTable(){
+      this.logFn('getTable')
       return {
         row: this.row, 
         col: this.col,
@@ -3337,6 +3387,7 @@ export default {
     },
     //表头-复选框被选中的行
     checkedRows(){
+      this.logFn('checkedRows')
       return {
         //所有被选中的行（包括禁用但默认选中的行）
         allChecked: this.row.filter(rr => rr.checked),
@@ -3349,6 +3400,7 @@ export default {
     },
     //单元格移入提示框
     cellOver(row, col, byFocus){
+      this.logFn('cellOver')
       if(!byFocus){
         //多选下拉聚焦时再显示
         if(this.option_show) return ;
@@ -3398,11 +3450,13 @@ export default {
 
     },
     cellOut(row, col){
+      this.logFn('cellOut')
       if(this.option_show) return ;
       this.hover_show = false;
     },
     //检查required
     checkRequired(){
+      this.logFn('checkRequired')
       let vm = this;
       for(let i=0; i<this.row.length; i++){
         for(let [key, attr] of Object.entries(this.row[i])){
@@ -3440,12 +3494,14 @@ export default {
     },
     //跳到某一行，在能处于中间时处于中间
     goLineCenter(line){
+      this.logFn('goLineCenter')
       let lol = Math.floor(((this.height - this.colRelMaxLevel * this.cellHeight) / this.cellHeight) / 2);
       this.geScrollTopArea = Math.max(0, Math.min((line-lol)*this.cellHeight, this.fullHeight - this.height + this.colRelMaxLevel * this.cellHeight));
     },
     
     //拖拽列宽
     dragDown(colItem, event){
+      this.logFn('dragDown')
       let vm = this;
       let move = false;
       event.preventDefault();
@@ -3510,6 +3566,7 @@ export default {
     },
     //排序
     colSort(col) {
+      this.logFn('colSort')
       let vm = this;
       col = this.deepClone(col);
       let headerCol = this.deepClone(vm.col);
@@ -3973,11 +4030,11 @@ export default {
 }
 /* option、提示框的过度 */
 .option-enter-active {
-  transition: all .24s ease;
+  transition: all .24s ease, top .17s linear;
   transform-origin: center top;
 }
 .option-leave-active{
-  transition: none;
+  transition: all 0s, top .17s linear;
 }
 .option-enter, 
 .option-leave-to {
