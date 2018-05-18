@@ -19,15 +19,14 @@
         class="container" 
         @mousewheel.stop="mousewheel"
         @touchstart="touchstart"
+        @click="navCoods = {}"
         :style="{
             width: width + 'px',
             height: height + 'px',
         }">
 
         <div class="body">
-            <!-- <div style="position: absolute; z-index: 99999">{{log}}</div> -->
             <div v-if="row.length == 0" class="no-text">暂无数据</div>
-
             <!-- //专门撑出滚动条的DOM// -->
             <div 
                 class="expand" 
@@ -326,7 +325,7 @@
                         v-if="rowItem[col.props].type == 'normal'"
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         :style="[rowItem[col.props].style]"
-                        @click.stop="hideOption"
+                        @click.stop="hideOption(); navCoods = {}"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         >
                         <div class="text nowrap">
@@ -339,14 +338,18 @@
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell" 
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
+                        @click.stop="highlight(rowItem, col)"
                         v-if="rowItem[col.props].type == 'edit'">
                         <input 
                           type="text" 
                           :ref="'inp-'+rowItem._rowid+'-'+col._colid"
                           :value="rowItem[col.props].value" 
                           class="edit-inp nowrap"
+                          :class="{
+                            'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                          }"
                           :style="[rowItem[col.props].style]"
-                          @focus="hideOption"
+                          @focus="hideOption(); highlight(rowItem, col)"
                           @input="
                             selectFullData = null;
                             modifyByRowCol(
@@ -364,14 +367,18 @@
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell" 
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
+                        @click.stop="highlight(rowItem, col)"
                         v-if="rowItem[col.props].type == 'number'">
                         <input 
                           :ref="'inp-'+rowItem._rowid+'-'+col._colid"
                           type="number" 
                           :value="rowItem[col.props].value" 
                           class="edit-inp nowrap"
+                          :class="{
+                            'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                          }"
                           :style="[rowItem[col.props].style]"
-                          @focus="hideOption"
+                          @focus="hideOption(); highlight(rowItem, col)"
                           @input="
                             selectFullData = null;
                             modifyByRowCol(
@@ -388,6 +395,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'select'">
                         <input 
@@ -409,15 +417,19 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="searchFocus(rowItem, col)"
+                          @focus="searchFocus(rowItem, col); highlight(rowItem, col)"
                           @blur.stop
                         />
                         <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -430,6 +442,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'opt_select'">
                         <input 
@@ -451,16 +464,20 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="opt_searchFocus(rowItem, col)"
+                          @focus="opt_searchFocus(rowItem, col); highlight(rowItem, col)"
                           @blur.stop
                         />
 
                         <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -473,6 +490,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'opt_mul_select'">
                         <input 
@@ -494,16 +512,20 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="opt_searchFocus(rowItem, col, true)"
+                          @focus="opt_searchFocus(rowItem, col, true); highlight(rowItem, col)"
                           @blur.stop
                         />
 
                         <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_mul_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -517,6 +539,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell" 
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'mul_select'">
                         <input 
@@ -538,16 +561,20 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="searchFocus(rowItem, col, true)"
+                          @focus="searchFocus(rowItem, col, true); highlight(rowItem, col)"
                           @blur.stop
                         />
 
                         <i v-show="rowItem[col.props].id.length != 0" @click="selectClose(rowItem, col, 'mul_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -560,6 +587,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="
                           rowItem[col.props].type == 'date' 
@@ -586,14 +614,18 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
-                          @focus="dataPickerFocus(rowItem, col);"
+                          @focus="dataPickerFocus(rowItem, col); highlight(rowItem, col)"
                         />
 
                         <i style="cursor: default" v-show="rowItem[col.props].value" class="fa fa-calendar-o edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -606,6 +638,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'time'">
                         <input  
@@ -628,14 +661,18 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
-                          @focus="timePickerFocus(rowItem, col)"
+                          @focus="timePickerFocus(rowItem, col); highlight(rowItem, col)"
                         />
 
                         <i style="cursor: default" v-show="rowItem[col.props].value" class="fa fa-clock-o edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -648,18 +685,22 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell" 
+                        @click.stop="highlight(rowItem, col)"
                         v-if="
-                        rowItem[col.props].type == 'month' ||
-                        rowItem[col.props].type == 'year'
+                          rowItem[col.props].type == 'month' ||
+                          rowItem[col.props].type == 'year'
                         ">
                         <input
                           type="text" 
                           :ref="'inp-'+rowItem._rowid+'-'+col._colid" 
                           :value="rowItem[col.props].value" 
                           class="edit-inp nowrap"
+                          :class="{
+                            'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid 
+                          }"
                           :placeholder="placeholder_date(rowItem[col.props].type)"
                           :style="[rowItem[col.props].style]"
-                          @focus="hideOption"
+                          @focus="hideOption(); highlight(rowItem, col)"
                           @input="
                             this.selectFullData = null;
                             modifyByRowCol(
@@ -712,7 +753,7 @@
                         v-if="rowItem[col.props].type == 'normal'"
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         :style="[rowItem[col.props].style]"
-                        @click.stop="hideOption"
+                        @click.stop="hideOption(); navCoods = {}"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         >
                         <div class="text nowrap">
@@ -725,14 +766,18 @@
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell" 
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
+                        @click.stop="highlight(rowItem, col)"
                         v-if="rowItem[col.props].type == 'edit'">
                         <input 
                           type="text" 
                           :ref="'inp-'+rowItem._rowid+'-'+col._colid"
                           :value="rowItem[col.props].value" 
                           class="edit-inp nowrap"
+                          :class="{
+                            'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                          }"
                           :style="[rowItem[col.props].style]"
-                          @focus="hideOption"
+                          @focus="hideOption(); highlight(rowItem, col)"
                           @input="
                             selectFullData = null;
                             modifyByRowCol(
@@ -750,14 +795,18 @@
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell" 
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
+                        @click.stop="highlight(rowItem, col)"
                         v-if="rowItem[col.props].type == 'number'">
                         <input 
                           :ref="'inp-'+rowItem._rowid+'-'+col._colid"
                           type="number" 
                           :value="rowItem[col.props].value" 
                           class="edit-inp nowrap"
+                          :class="{
+                            'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                          }"
                           :style="[rowItem[col.props].style]"
-                          @focus="hideOption"
+                          @focus="hideOption(); highlight(rowItem, col)"
                           @input="
                             selectFullData = null;
                             modifyByRowCol(
@@ -774,6 +823,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'select'">
                         <input 
@@ -795,15 +845,19 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="searchFocus(rowItem, col)"
+                          @focus="searchFocus(rowItem, col); highlight(rowItem, col)"
                           @blur.stop
                         />
                         <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -816,6 +870,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'opt_select'">
                         <input 
@@ -837,16 +892,20 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="opt_searchFocus(rowItem, col)"
+                          @focus="opt_searchFocus(rowItem, col); highlight(rowItem, col)"
                           @blur.stop
                         />
 
                         <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -859,6 +918,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'opt_mul_select'">
                         <input 
@@ -880,16 +940,20 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="opt_searchFocus(rowItem, col, true)"
+                          @focus="opt_searchFocus(rowItem, col, true); highlight(rowItem, col)"
                           @blur.stop
                         />
 
                         <i v-show="(rowItem[col.props].id+'').trim() != ''" @click="selectClose(rowItem, col, 'opt_mul_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -903,6 +967,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
                         class="cell" 
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'mul_select'">
                         <input 
@@ -924,16 +989,20 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
                           readonly
-                          @focus="searchFocus(rowItem, col, true)"
+                          @focus="searchFocus(rowItem, col, true); highlight(rowItem, col)"
                           @blur.stop
                         />
 
                         <i v-show="rowItem[col.props].id.length != 0" @click="selectClose(rowItem, col, 'mul_select')" class="fa fa-times-circle edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -946,6 +1015,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="
                           rowItem[col.props].type == 'date' 
@@ -972,14 +1042,18 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
-                          @focus="dataPickerFocus(rowItem, col);"
+                          @focus="dataPickerFocus(rowItem, col); highlight(rowItem, col)"
                         />
 
                         <i style="cursor: default" v-show="rowItem[col.props].value" class="fa fa-calendar-o edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -992,6 +1066,7 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell"
+                        @click.stop="highlight(rowItem, col)"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'time'">
                         <input  
@@ -1014,14 +1089,18 @@
                             'active'
                             : 
                             ''
+                            ,
+                            {
+                              'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid
+                            }
                           ]"
-                          @focus="timePickerFocus(rowItem, col)"
+                          @focus="timePickerFocus(rowItem, col); highlight(rowItem, col)"
                         />
 
                         <i style="cursor: default" v-show="rowItem[col.props].value" class="fa fa-clock-o edit-close"></i>
 
                         <div 
-                          @click.stop="hideOption"
+                          @click="hideOption"
                           @touchstart.stop
                           @touchend.stop
                           v-show="option_show || dataPicker_show || timePicker_show" 
@@ -1034,18 +1113,22 @@
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid" 
                         class="cell" 
+                        @click.stop="highlight(rowItem, col)"
                         v-if="
-                        rowItem[col.props].type == 'month' ||
-                        rowItem[col.props].type == 'year'
+                          rowItem[col.props].type == 'month' ||
+                          rowItem[col.props].type == 'year'
                         ">
                         <input
                           type="text" 
                           :ref="'inp-'+rowItem._rowid+'-'+col._colid" 
                           :value="rowItem[col.props].value" 
                           class="edit-inp nowrap"
+                          :class="{
+                            'highlight': navCoodsComp.row == rowItem._rowid && navCoodsComp.col == col._colid 
+                          }"
                           :placeholder="placeholder_date(rowItem[col.props].type)"
                           :style="[rowItem[col.props].style]"
-                          @focus="hideOption"
+                          @focus="hideOption(); highlight(rowItem, col)"
                           @input="
                             this.selectFullData = null;
                             modifyByRowCol(
@@ -1394,7 +1477,7 @@
             <i class="fa fa-floppy-o"></i>&nbsp;&nbsp;
             保存
           </div>
-          <div v-show="entry" class="operate-item" @click="operateFn('add')">
+          <div :class="{'no-entry': entry == false}" class="operate-item" @click="operateFn('add')">
             <i class="fa fa-plus"></i>&nbsp;&nbsp;
             增加一行
           </div>
@@ -1541,10 +1624,12 @@ export default {
       operate_top: 0,
       operate_info: {},
       operate_loading: {},
-
+  
       //方法调用的log日志
       log: [],
-      startLog: true,
+      startLog: false,
+      //方向导航标的
+      navCoods: {},
 
     };
   },
@@ -1919,7 +2004,17 @@ export default {
         m: d.format('mm'),
         s: d.format('ss')
       }
-    }
+    },
+    //高亮单元格
+    navCoodsComp(){
+      if(this.navCoods.row == undefined || this.navCoods.row == ''){
+        return {row: '', col: ''};
+      };
+      return {
+        row: this.navCoods.row._rowid,
+        col: this.navCoods.col._colid,
+      }
+    },
 
   },
 
@@ -1931,6 +2026,7 @@ export default {
     this.fixedWidthHeight();
     window.addEventListener("resize", this.fixWindowResize);
     document.addEventListener("click", this.hideOption);
+    document.addEventListener("keydown", this.keydown);
     /**
     * 整体初始化
     */
@@ -2602,7 +2698,9 @@ export default {
       if(dom instanceof Array){
         dom = dom[0];
       };
+      this.option_show = false;
       this.dataPicker_show = false;
+      this.hover_show = false;
       this.timePicker_show = false;
       this.operate_show = false;
       //先全部选中
@@ -2687,7 +2785,9 @@ export default {
     opt_searchFocus(row, col, isMul){
       this.logFn('opt_searchFocus')
       let dom = this.$refs['cell-'+row._rowid+'-'+col._colid];
+      this.option_show = false;
       this.dataPicker_show = false;
+      this.hover_show = false;
       this.timePicker_show = false;
       this.operate_show = false;
       if(dom instanceof Array){
@@ -2758,6 +2858,8 @@ export default {
       };
       //隐藏option的DOM下拉
       this.option_show = false;
+      this.dataPicker_show = false;
+      this.hover_show = false;
       this.timePicker_show = false;
       this.operate_show = false;
       //先全部选中
@@ -2977,6 +3079,9 @@ export default {
       //隐藏option的DOM下拉
       this.option_show = false;
       this.dataPicker_show = false;
+      this.hover_show = false;
+      this.timePicker_show = false;
+      this.operate_show = false;
       //先全部选中
       dom.querySelector('input').select();
 
@@ -3518,9 +3623,212 @@ export default {
     },
     //跳到某一行，在能处于中间时处于中间
     goLineCenter(line){
-      this.logFn('goLineCenter')
+      this.logFn('goLineCenter');
       let lol = Math.floor(((this.height - this.colRelMaxLevel * this.cellHeight) / this.cellHeight) / 2);
       this.geScrollTopArea = Math.max(0, Math.min((line-lol)*this.cellHeight, this.fullHeight - this.height + this.colRelMaxLevel * this.cellHeight));
+    },
+    //跳到某一列，在能处于中间时处于中间
+    goColCenter(col){
+      this.logFn('goColCenter')
+      let willGo = col._left - (this.width - col.width)/2;
+      if(willGo < 0) willGo = 0;
+      if(willGo > this.fullWidth - this.width) willGo = this.fullWidth - this.width;
+      this.geScrollLeftArea = willGo;
+    },
+    //键盘按下事件
+    keydown(e){
+      //禁用tab键
+      if(e.keyCode == 9){
+        e.preventDefault();
+      };
+      switch (e.keyCode) {
+        case 38:
+          //上
+          this.cellNav('up')
+          break;
+        case 40:
+          //下
+          this.cellNav('down')
+          break;
+        case 37:
+          //左
+          this.cellNav('left')
+          break;
+        case 39:
+          //右
+          this.cellNav('right')
+          break;
+      };
+    },
+    //正处于高亮的单元格
+    highlight(row, col){
+      this.navCoods = {row, col};
+    },
+
+    /*
+    * 键盘的方向键-进行单元格高亮focus并且居中移动
+    */
+    cellNav(dir){
+      if(this.navCoods.row){
+        let vm = this;
+        let cur_row = this.navCoods.row;
+        let cur_col = this.navCoods.col;
+        let cur_leftArea = this.geScrollLeftArea;
+        let cur_topArea = this.geScrollTopArea;
+        let v = false;
+        let h = false;
+        /*
+        * 算出下一个聚焦元素，高亮并且滚动条也需要移动
+        */
+        let next_col = {};
+        //导航后的下一个单元格DOM
+        let next_dom = null;
+
+        if(dir == 'up'){
+          v = true;
+          let line = 0;
+          // 找到下一个input类型的单元格
+          for(let i=0; i<vm.row.length; i++){
+            if(cur_row._rowid == vm.row[i]._rowid){
+              if(vm.row[i-1] == undefined) return ;
+              line = i-1;
+              vm.navCoods = {row: vm.row[i-1], col: cur_col}
+              break ;
+            };
+          };
+          this.goLineCenter(line);
+        };
+        if(dir == 'down'){
+          v = true;
+          let line = 0;
+          // 找到下一个input类型的单元格
+          for(let i=0; i<vm.row.length; i++){
+            if(cur_row._rowid == vm.row[i]._rowid){
+              if(vm.row[i+1] == undefined) return ;
+              line = i+1;
+              vm.navCoods = {row: vm.row[i+1], col: cur_col}
+              break ;
+            };
+          };
+          this.goLineCenter(line);
+        };
+        if(dir == 'left'){
+          h = true;
+          let next_dis = cur_col.width; // 当前列到前一列的跨度距离
+          // 找到下一个input类型的单元格（注意：避开隐藏列、普通列）
+          for(let i=0; i<vm.col.length; i++){
+            if(cur_col._colid == vm.col[i]._colid){
+              // 找到不是（隐藏列、普通列）的前一列
+              let k = 1;
+              while(123){
+                if(vm.col[i-k] == undefined) break ;
+                if(vm.col[i-k].hide == true) {
+                  k++;
+                  continue ;
+                }
+                next_dis -= vm.col[i-k].width;
+                if(cur_row[vm.col[i-k].props].type == 'normal') {
+                  k++;
+                  continue ;
+                }
+                break ;
+              };
+              next_col = vm.col[i-k];
+              if(next_col == undefined) return ;
+              next_dis -= next_col.width;
+              vm.navCoods = {row: cur_row, col: next_col}
+              break ;
+            };
+          };
+          this.goColCenter(next_col);
+        };
+        if(dir == 'right'){
+          h = true;
+          let next_dis = cur_col.width; // 当前列到下一列的跨度距离
+          // 找到下一个input类型的单元格（注意：避开隐藏列、普通列）
+          for(let i=0; i<vm.col.length; i++){
+            if(cur_col._colid == vm.col[i]._colid){
+              // 找到不是（隐藏列、普通列）的下一列
+              let k = 1;
+              while(123){
+                if(vm.col[i+k] == undefined) break ;
+                if(vm.col[i+k].hide == true) {
+                  k++;
+                  continue ;
+                }
+                next_dis += vm.col[i+k].width;
+                if(cur_row[vm.col[i+k].props].type == 'normal') {
+                  k++;
+                  continue ;
+                }
+                break ;
+              };
+              next_col = vm.col[i+k];
+              if(next_col == undefined) return ;
+              next_dis -= next_col.width;
+              vm.navCoods = {row: cur_row, col: next_col}
+              break ;
+            };
+          };
+          this.goColCenter(next_col);
+        };
+        
+        this.$nextTick(()=>{
+          if(h == true){
+            /*
+            * 必须在滚动条，滚动后的nextTick回调中，DOM才更新出下一个单元格的DOM，才找得到单元格DOM
+            */
+            next_dom = vm.$refs['inp-' + cur_row._rowid + '-' + next_col._colid];
+            if(next_dom instanceof Array){
+              next_dom = next_dom[0];
+            };
+            if(cur_row[next_col.props].type == 'normal'){
+              return ;
+            };
+          };
+          if(v == true){
+            next_dom = vm.$refs['inp-' + vm.navCoods.row._rowid + '-' + vm.navCoods.col._colid];
+            if(next_dom instanceof Array){
+              next_dom = next_dom[0];
+            };
+          };
+          /*
+          * 真正触发focus前，先设置好可能的下拉、时间、日期框的位置         
+          */
+          let rect = next_dom.getBoundingClientRect();
+          let rect2 = this.$refs.container.getBoundingClientRect();
+
+          //option
+          this.option_width = Math.min(Math.max(rect.width, 166), 400);
+          let left = rect.left - rect2.left - 5;
+          if(rect2.width < left + this.option_width){
+            left = rect2.width - this.option_width - 5;
+          }
+          this.option_left = left;
+          this.option_top = rect.top - rect2.top + rect.height + 8;
+
+          //dataPicker
+          left = rect.left - rect2.left - 5;
+          if(rect2.width < left + 220){
+            left = rect2.width - 220 - 5;
+          }
+          this.dataPicker_left = left;
+          this.dataPicker_top = rect.top - rect2.top + rect.height + 8;
+          this.dataPicker_width = 220;
+
+          //timePicker
+          left = rect.left - rect2.left - 5;
+          if(rect2.width < left + 240){
+            left = rect2.width - 240 - 5;
+          }
+          this.timePicker_left = left;
+          this.timePicker_top = rect.top - rect2.top + rect.height + 8;
+          this.timePicker_width = 240;
+          
+          next_dom.focus();
+        });
+
+      };
     },
     
     //拖拽列宽
@@ -3731,6 +4039,7 @@ export default {
   beforeDestroy(){
     document.removeEventListener("click", this.hideOption);
     window.removeEventListener("resize", this.fixWindowResize);
+    document.removeEventListener("keydown", this.keydown);
   }
 
 };
@@ -4048,9 +4357,12 @@ export default {
   outline: none;
   text-indent: 10px;
 }
+.highlight{
+  border: 1px solid #c7c4ff;
+}
 .edit-inp:focus,
 .edit-inp.active {
-  border: 1px solid #1abfe4;
+  border: 1px solid #5b0ae4;
 }
 /* option、提示框的过度 */
 .option-enter-active {
@@ -4757,6 +5069,12 @@ input::input-placeholder {
 .operate-item:hover{
   background: #f1f1f1;
   color: #00abff;
+}
+.operate-item.no-entry,
+.operate-item.no-entry:hover{
+  color: #dadada;
+  background: #fff;
+  cursor: not-allowed;
 }
 .operate-cir{
   position: absolute; 

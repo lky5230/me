@@ -509,7 +509,7 @@
                       <!-- 多选框 -->
                       <div 
                         :ref="'cell-'+rowItem._rowid+'-'+col._colid"
-                        class="cell" 
+                        class="cell"
                         @touchend.stop="inpTouchEnd(rowItem._rowid, col._colid)"
                         v-if="rowItem[col.props].type == 'mul_select'">
                         <input 
@@ -2377,11 +2377,11 @@ export default {
     //下拉input的close
     selectClose(row, col, type){
       this.selectFullData = 'close';
-      if(type == 'mul_select'){
+      if(type == 'mul_select' || type == "opt_mul_select"){
         this.modifyByRowCol(row._rowid, col.props, [], []);
-      }else if(type == 'select'){
+      }else if(type == 'select' || type == 'opt_select'){
         this.modifyByRowCol(row._rowid, col.props, '', '');
-      }else if(type == 'date' || type == 'time'){
+      }else if(type == 'date' || type == 'time' || type == 'datetime'){
         this.modifyByRowCol(row._rowid, col.props, '');
       }
       this.hideOption();

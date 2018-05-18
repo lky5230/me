@@ -464,9 +464,8 @@ export default {
           id: i
         },
         a20: {
-          type: "normal",
-          value: i + "-" + 20,
-          id: i
+          type: "edit",
+          value: i + "-" + 20
         },
         a21: {
           type: "normal",
@@ -515,8 +514,7 @@ export default {
         },
         a30: {
           type: "normal",
-          value: i + "-" + 30,
-          id: i
+          value: 30,
         },
         a31: {
           type: "normal",
@@ -559,15 +557,14 @@ export default {
           id: i
         },
         a39: {
-          type: "normal",
+          type: "edit",
           value: i + "-" + 39,
           id: i
         },
         a40: {
-          type: "normal",
-          value: i + "-" + 40,
-          id: i
-        }
+          type: "date",
+          value: '2018-03-03',
+        },
       });
     }
     this.rowData = r;
