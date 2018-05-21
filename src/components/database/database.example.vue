@@ -16,6 +16,7 @@
           :entry="entry"
           :showCheckBoxAndIndex="showCheckBoxAndIndex"
           :showOperate="showOperate"
+          :operateItem="operateItem"
           :onlyShowIndex="onlyShowIndex"
           :onlyShowCheckBox="onlyShowCheckBox"
           :showPrompt="showPrompt"
@@ -335,6 +336,14 @@ export default {
       onlyShowCheckBox: true,
       //是否显示操作列
       showOperate: true,
+      //操作列的项
+      operateItem: {
+        save: true,
+        add: true,
+        remove: true,
+        up: true,
+        down: true,
+      },
       //是否显示状态标色列
       showStatus: true,
 
