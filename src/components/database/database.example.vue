@@ -350,7 +350,7 @@ export default {
   created(){
     /***假数据***/
     let r = [];
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 200; i++) {
       r.push({
         checked: i == 6||i==3||i==2? true: false, //有复选框时，表示是否初始化选中
         noCheckAble: i == 1 || i == 2? true: false, //true表示复选框不可用
@@ -398,6 +398,7 @@ export default {
         },
         a7: {
           type: "datetime",
+          required: true,
           value: '2012-02-27 08:02:33'
         },
         a8: {

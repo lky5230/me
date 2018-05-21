@@ -187,7 +187,7 @@
                     transform: 'translate(0px, '+ -1*geScrollTopArea +'px)'
                 }">
 
-              <transition-group name="sheet">
+              <!-- <transition-group name="sheet"> -->
                 <!-- (y轴方向的动态渲染) -->
                 <div 
                   class="sheet-line"
@@ -205,7 +205,7 @@
                   <!-- 表体-左侧固定 -->
                   <div class="sheet-body-left">
 
-                    <!-- 表头-状态列 -->
+                    <!-- 表体-状态列 -->
                     <div 
                       v-if="showStatus"
                       class="tbl-cell check-cell"
@@ -1146,7 +1146,7 @@
                   </div>
 
                 </div>
-              </transition-group>
+              <!-- </transition-group> -->
 
             </div>
 
@@ -3593,6 +3593,17 @@ export default {
             if(attr.type == 'number'){
               if(isNaN(attr.value)){
                 let msg = getTitleByProps(key);
+                for(let j=0; j<vm.col.length; j++){
+                  if(vm.col[j].props == key){
+                    //跳到该列
+                    this.goColCenter(vm.col[j]);
+                    this.navCoods = {
+                      row: this.row[i],
+                      col: vm.col[j],
+                    }
+                    break ;
+                  }
+                }
                 this.row[i]._error = true;
                 //跳到该行
                 this.goLineCenter(i);
@@ -3602,6 +3613,17 @@ export default {
             }else{
               if((attr.value+'').trim() == ''){
                 let msg = getTitleByProps(key);
+                for(let j=0; j<vm.col.length; j++){
+                  if(vm.col[j].props == key){
+                    //跳到该列
+                    this.goColCenter(vm.col[j]);
+                    this.navCoods = {
+                      row: this.row[i],
+                      col: vm.col[j],
+                    }
+                    break ;
+                  }
+                }
                 this.row[i]._error = true;
                 //跳到该行
                 this.goLineCenter(i);
@@ -3644,11 +3666,13 @@ export default {
       switch (e.keyCode) {
         case 38:
           //上
-          this.cellNav('up')
+          // e.preventDefault()
+          this.cellNav('up', e)
           break;
         case 40:
           //下
-          this.cellNav('down')
+          // e.preventDefault()
+          this.cellNav('down', e)
           break;
         case 37:
           //左
@@ -3668,7 +3692,7 @@ export default {
     /*
     * 键盘的方向键-进行单元格高亮focus并且居中移动
     */
-    cellNav(dir){
+    cellNav(dir, e){
       if(this.navCoods.row){
         let vm = this;
         let cur_row = this.navCoods.row;
@@ -3677,6 +3701,18 @@ export default {
         let cur_topArea = this.geScrollTopArea;
         let v = false;
         let h = false;
+        
+        //找到第一列和最后一列
+        let firstCol = null;
+        let lastCol = null;
+        for(let i=0; i<vm.col.length; i++){
+          if(vm.col[i].type != 'normal' && vm.col[i].hide != true){
+            if(firstCol == null){
+              firstCol = vm.col[i];
+            }
+            lastCol =  vm.col[i];
+          }
+        }
         /*
         * 算出下一个聚焦元素，高亮并且滚动条也需要移动
         */
@@ -3696,6 +3732,9 @@ export default {
               break ;
             };
           };
+          if(line != 0){
+            e.preventDefault();
+          }
           this.goLineCenter(line);
         };
         if(dir == 'down'){
@@ -3710,6 +3749,9 @@ export default {
               break ;
             };
           };
+          if(line != vm.row.length - 1){
+            e.preventDefault();
+          }
           this.goLineCenter(line);
         };
         if(dir == 'left'){
@@ -3734,7 +3776,9 @@ export default {
                 break ;
               };
               next_col = vm.col[i-k];
-              if(next_col == undefined) return ;
+              if(next_col == undefined){
+                next_col = lastCol;
+              }
               next_dis -= next_col.width;
               vm.navCoods = {row: cur_row, col: next_col}
               break ;
@@ -3764,7 +3808,9 @@ export default {
                 break ;
               };
               next_col = vm.col[i+k];
-              if(next_col == undefined) return ;
+              if(next_col == undefined) {
+                next_col = firstCol;
+              }
               next_dis -= next_col.width;
               vm.navCoods = {row: cur_row, col: next_col}
               break ;
