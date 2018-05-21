@@ -47,31 +47,31 @@ export default {
       //列数据
       colData: [
           {
-          title: "时间",
+          title: "多选",
           props: "a1",
-          width: 120,
-          icon: 'time',
+          width: 150,
+          icon: '',
           sort: true,
           //是否隐藏该列
           // hide: true,
           // fixed: true
           },
           {
-          title: "数字编辑",
-          width: 80,
+          title: "单选",
+          width: 100,
           props: "a2",
           icon: 'number',
           },
           {
-          title: "单选",
+          title: "sync单选",
           width: 130,
           props: "a3",
           //是否隐藏该列
-          hide: true,
+          // hide: true,
           icon: 'select',
           },
           {
-          title: "多选",
+          title: "sync多选",
           width: 140,
           props: "a4",
           icon: 'mul_select',
@@ -97,12 +97,13 @@ export default {
           props: "a7"
           },
           {
-          title: "编辑数字英文等等",
-          // width: 140,
+          title: "编辑数字",
+          width: 140,
           props: "a8"
           },
           {
-          title: "标题SFDJKB沙发上",
+          title: "编辑文字",
+          width: 200,
           props: "a9"
           },
           {

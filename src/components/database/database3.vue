@@ -1529,7 +1529,7 @@ export default {
     //option选项框是否进行分页
     showOptionPage: { default: true },
     //option分页时一页显示多少条
-    option_limit: { default: 500 },
+    option_limit: { default: 100 },
     //是否显示操作列
     showOperate: { default: false },
     //是否显示状态列
