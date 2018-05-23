@@ -6,7 +6,7 @@
       <button style="padding: 6px; border: 1px solid #666;" title="第一列设置了required=true" @click="checkRequired">对required=true检查</button>
       <button style="padding: 6px; border: 1px solid #666;" @click="reset">doReset</button>
       注意：表格宽高是撑满父容器的
-      <div style="width: 100%; height: 500px; margin-top: 14px;">
+      <div style="width: 100%; height: 540px; margin-top: 14px;">
         <database
           ref="database"
           :scrollSpeed="scrollSpeed"
@@ -31,7 +31,6 @@
         >
         </database>
       </div>
-      <div style="height: 200px; background: red; margin-top: 20px;"></div>
   </div>
 </template>
 
@@ -55,7 +54,7 @@ export default {
           sort: true,
           //是否隐藏该列
           // hide: true,
-          // fixed: true
+          fixed: true
           },
           {
           title: "单选",
@@ -578,7 +577,11 @@ export default {
         },
       });
     }
-    this.rowData = r;
+    setTimeout(()=>{
+      this.rowData = r;
+      this.$refs.database.doReset(true);
+    }, 2000)
+    
     let i = 0;
     this.entry = {
         checked: i == 6||i==3||i==2? true: false, //有复选框时，表示是否初始化选中

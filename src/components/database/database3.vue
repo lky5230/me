@@ -90,7 +90,7 @@
                     class="entry-add"
                     v-if="entry"
                     title="向表格末尾增加一行">
-                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-plus-circle"></i>
                   </i>
                   <i v-else>
                     <i class="fa fa-cog"></i>
@@ -191,6 +191,9 @@
                 <!-- (y轴方向的动态渲染) -->
                 <div 
                   class="sheet-line"
+                  :class="{
+                    'actived': rowItem._rowid == sheetLineActived,
+                  }"
                   v-if="
                     (rowLine + 1) * cellHeight - geScrollTopArea > -cellHeight
                     &&
@@ -218,6 +221,7 @@
                         height: cellHeight + 'px',
                         left: 0 + 'px',
                         width: statusWidth + 'px',
+                        'border-right-width': '0px',
                       }">
                     </div>
 
@@ -1190,7 +1194,15 @@
           </div>
         </div>
         
-        <div @click.stop.prevent v-show="dragLineShow" :style="{left: dragLeft + 'px'}" class="drag_line"></div>
+        <!-- 拖拽线 -->
+        <div 
+          @click.stop.prevent 
+          v-show="dragLineShow" 
+          :style="{
+            left: dragLeft + 'px'
+          }" 
+          class="drag_line">
+        </div>
 
     </div>
 
@@ -1267,7 +1279,7 @@
           top: dataPicker_top + 'px',
           width: dataPicker_width + 'px',
         }">
-        <div class="arrow"></div>
+        <div v-show="!option_hide_arrow" class="arrow"></div>
         <div class="picker-arrow clearfix">
           <span @click.prevent.stop="dateYear(-1)" style="float: left;" class="fa fa-angle-double-left"></span>
           <span @click.prevent.stop="dateMonth(-1)" style="float: left;" class="fa fa-angle-left"></span>
@@ -1345,8 +1357,7 @@
           top: timePicker_top + 'px',
           width: timePicker_width + 'px',
         }">
-        <div class="arrow"></div>
-
+        <div v-show="!option_hide_arrow" class="arrow"></div>
         <div class="time-control">
           <div style="font-size: 15px;" :style="{color: timeType? '#05a78d': '#6754c7'}" class="time-h">时</div>
           <div style="font-size: 15px;" :style="{color: timeType? '#05a78d': '#6754c7'}" class="time-m">分</div>
@@ -1471,7 +1482,7 @@
           width: 120 + 'px',
           transition: 'all 0s, top .17s, scaleY .17s;',
         }">
-        <div class="arrow"></div>
+        <div v-show="!option_hide_arrow" class="arrow"></div>
         <div class="operate-item-wrap">
           <div v-show="operateItem.save" class="operate-item" @click="operateFn('save')">
             <i class="fa fa-floppy-o"></i>&nbsp;&nbsp;
@@ -1496,7 +1507,7 @@
         </div>
       </div>
     </transition>
-  
+
   </div>
 </template>
 
@@ -2015,7 +2026,7 @@ export default {
         s: d.format('ss')
       }
     },
-    //高亮单元格
+    //高亮-编辑单元格
     navCoodsComp(){
       if(this.navCoods.row == undefined || this.navCoods.row == ''){
         return {row: '', col: ''};
@@ -2025,6 +2036,19 @@ export default {
         col: this.navCoods.col._colid,
       }
     },
+    //高亮-处于编辑状态的行
+    sheetLineActived(){
+      if(this.operate_show){
+        return this.operate_info._rowid;
+      }else{
+        if(this.navCoods.row){
+          return this.navCoods.row._rowid;
+        }else{
+          return -1;
+        }
+      }
+    },
+
 
   },
 
@@ -2081,6 +2105,10 @@ export default {
         }
         if(this.col[i].width == undefined){
           this.col[i].width = 90;
+        };
+        if(typeof this.col[i].width != 'number'){
+          console.error(this.col[i].title + '的width必须是number类型！')
+          return ;
         };
       }
 
@@ -2558,14 +2586,27 @@ export default {
       this.dataPicker_show = false;
       this.timePicker_show = false;
       this.option_show = false;
+      this.hover_show = false;
 
       let rect = dom.getBoundingClientRect();
       let rect2 = this.$refs.container.getBoundingClientRect();
 
-      //option的处理
+      //位置处理
       let left = rect.left - rect2.left - 5;
       this.operate_left = left;
-      this.operate_top = rect.top - rect2.top + rect.height + 8;
+
+      let will_top = rect.top - rect2.top + rect.height + 4;
+      let w_h = document.documentElement.clientHeight || document.body.clientHeight;
+      let opt_h = 184;
+      let ful_h = +will_top + +rect2.top + opt_h;
+      if(ful_h > w_h){
+        will_top = will_top - (ful_h - w_h);
+        this.option_hide_arrow = true;
+      }else{
+        this.option_hide_arrow = false;
+      }
+      this.operate_top = will_top;
+      
       this.operate_info = rowItem;
       if(isShow != undefined){
         this.operate_show = isShow;
@@ -2727,11 +2768,21 @@ export default {
         left = rect2.width - this.option_width - 5;
       }
       this.option_left = left;
-      this.option_top = rect.top - rect2.top + rect.height + 8;
-      this.option_hide_arrow = false;
-      this.option_loading = true;
+      
+      let will_top = rect.top - rect2.top + rect.height + 4;
+      let w_h = document.documentElement.clientHeight || document.body.clientHeight;
+      let opt_h = 226;
+      let ful_h = +will_top + +rect2.top + opt_h;
+      if(ful_h > w_h){
+        will_top = will_top - (ful_h - w_h);
+        this.option_hide_arrow = true;
+      }else{
+        this.option_hide_arrow = false;
+      }
+      this.option_top = will_top;
       this.option_show = true;
 
+      this.option_loading = true;
       //兼容火狐的滚轮事件
       this._wheelStop = function(e){
         e.stopPropagation();
@@ -2812,8 +2863,19 @@ export default {
       //option的处理
       this.option_info = {row, col};
       this.option_left = rect.left - rect2.left - 5;
-      this.option_top = rect.top - rect2.top + rect.height + 8;
-      this.option_hide_arrow = false;
+
+      let will_top = rect.top - rect2.top + rect.height + 4;
+      let w_h = document.documentElement.clientHeight || document.body.clientHeight;
+      let opt_h = 172;
+      let ful_h = +will_top + +rect2.top + opt_h;
+      if(ful_h > w_h){
+        will_top = will_top - (ful_h - w_h);
+        this.option_hide_arrow = true;
+      }else{
+        this.option_hide_arrow = false;
+      }
+      this.option_top = will_top;
+      
       this.option_width = Math.min(Math.max(rect.width, 166), 400);
       this.option_loading = false;
       this.option_show = true;
@@ -2890,7 +2952,24 @@ export default {
         left = rect2.width - 220 - 5;
       }
       this.dataPicker_left = left;
-      this.dataPicker_top = rect.top - rect2.top + rect.height + 8;
+
+      let will_top = rect.top - rect2.top + rect.height + 4;
+      let w_h = document.documentElement.clientHeight || document.body.clientHeight;
+      let opt_h = 0;
+      if(row[col.props].type == 'datetime'){
+        opt_h = 346;
+      }else{
+        opt_h = 314;
+      }
+      let ful_h = +will_top + +rect2.top + opt_h;
+      if(ful_h > w_h){
+        will_top = will_top - (ful_h - w_h);
+        this.option_hide_arrow = true;
+      }else{
+        this.option_hide_arrow = false;
+      }
+      this.dataPicker_top = will_top;
+
       this.dataPicker_width = 220;
       this.dataPicker_show = true;
     },
@@ -3031,14 +3110,14 @@ export default {
     dateTimeHMSFn(e, type){
       this.logFn('dateTimeHMSFn')
       let val = +e.target.value;
-      
-      let old_yyyy = new Date(this.dataPicker_date).format('yyyy');
-      let old_MM = new Date(this.dataPicker_date).format('MM');
-      let old_dd = new Date(this.dataPicker_date).format('dd');
+      let _date = new Date(this.dataPicker_date);
+      let old_yyyy = _date.format('yyyy');
+      let old_MM = _date.format('MM');
+      let old_dd = _date.format('dd');
 
-      let old_hh = new Date(this.dataPicker_date).format('hh');
-      let old_mm = new Date(this.dataPicker_date).format('mm');
-      let old_ss = new Date(this.dataPicker_date).format('ss');
+      let old_hh = _date.format('hh');
+      let old_mm2= _date.format('mm');
+      let old_ss = _date.format('ss');
 
       if(type == 'h'){
         old_hh = val;
@@ -3050,12 +3129,12 @@ export default {
         }
       }
       if(type == 'm'){
-        old_mm = val;
-        if(old_mm >= 60){
-          old_mm = 0;
+        old_mm2 = val;
+        if(old_mm2 >= 60){
+          old_mm2 = 0;
         }
-        if(old_hh < 0){
-          old_hh = 59;
+        if(old_mm2 < 0){
+          old_mm2 = 59;
         }
       }
       if(type == 's'){
@@ -3070,13 +3149,13 @@ export default {
       if(old_hh < 10){
         old_hh = '0' + +old_hh;
       }
-      if(old_mm < 10){
-        old_mm = '0' + +old_mm;
+      if(old_mm2 < 10){
+        old_mm2 = '0' + +old_mm2;
       }
       if(old_ss < 10){
         old_ss = '0' + +old_ss;
       }
-      this.dataPicker_date = `${old_yyyy}-${old_MM}-${old_dd} ${old_hh}:${old_mm}:${old_ss}`;
+      this.dataPicker_date = `${old_yyyy}-${old_MM}-${old_dd} ${old_hh}:${old_mm2}:${old_ss}`;
     },
 
     //时间选择器-聚焦
@@ -3116,7 +3195,19 @@ export default {
         left = rect2.width - 240 - 5;
       }
       this.timePicker_left = left;
-      this.timePicker_top = rect.top - rect2.top + rect.height + 8;
+
+      let will_top = rect.top - rect2.top + rect.height + 4;
+      let w_h = document.documentElement.clientHeight || document.body.clientHeight;
+      let opt_h = 344;
+      let ful_h = +will_top + +rect2.top + opt_h;
+      if(ful_h > w_h){
+        will_top = will_top - (ful_h - w_h);
+        this.option_hide_arrow = true;
+      }else{
+        this.option_hide_arrow = false;
+      }
+      this.timePicker_top = will_top;
+
       this.timePicker_width = 240;
       this.timePicker_show = true;
 
@@ -4166,7 +4257,7 @@ export default {
 .scrollbar-y.mob,
 .scrollbar-y.mob:hover,
 .scrollbar-y.mob .scrollbar-y-drag{
-  width: 20px;
+  /* width: 20px; */
 }
 .drag-x1,
 .drag-x2 {
@@ -4221,6 +4312,7 @@ export default {
   border-top: 1px solid #ebeef5;
   border-left: 1px solid #ebeef5;
   padding: 0px;
+  top: 0px;
 }
 .tbl-cell input{
   background: transparent;
@@ -4291,7 +4383,7 @@ export default {
   border-left-width: 0px;
 }
 .sheet-header-left .tbl-cell:nth-last-of-type(1) {
-  border-right: 1px solid #ebeef5;
+  border-right: 1px solid #ebeef5 !important;
 }
 .sheet-body-left .tbl-cell {
   border: none;
@@ -4326,11 +4418,15 @@ export default {
 .sheet-body-left .tbl-cell{
   background: #fff;
 }
-.sheet-line:hover {
+.sheet-line:hover{
   background: #f5f7fa;
 }
 .sheet-line:hover .sheet-body-left .tbl-cell{
   background: #f5f7fa;
+}
+.sheet-line.actived,
+.sheet-line.actived .sheet-body-left .tbl-cell{
+  background: #fff5f0;
 }
 .sheet-body-left {
   z-index: 11;
@@ -4468,7 +4564,7 @@ input::input-placeholder {
 }
 .option .opp{
   position: relative;
-  max-height: 200px;
+  height: 150px;
   overflow-y: auto;
   overflow-x: hidden;
 }
