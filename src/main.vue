@@ -12,6 +12,7 @@
     </div>
     
     <div class="clearfix" style="height: calc(100vh - 52px);">
+
       <!-- 1、固定型-pc侧边栏 -->
       <div 
         v-if="$store.state.sidebarType == 'left'" 
@@ -21,6 +22,7 @@
         }">
         <sidebar-left-pc />
       </div>
+
       <!-- 页面 -->
       <div 
         class="right-page fr" 
@@ -30,6 +32,7 @@
         }">
         <router-view />
       </div>
+
     </div>
 
     <!-- 2、悬浮型-pc侧边栏 -->
@@ -51,7 +54,6 @@ export default {
   created(){
     //获取菜单
     this.getMenu();
-
     
   },
   methods: {

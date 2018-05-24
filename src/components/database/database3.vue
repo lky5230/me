@@ -4303,6 +4303,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 .clearfix:before,
 .clearfix:after{
@@ -4434,7 +4435,6 @@ export default {
 }
 .check-cell.error span{
   color: #ff4f43 !important;
-  font-weight: bold;
 }
 .check-cell .fa-check-square{
   cursor: pointer;
@@ -4482,7 +4482,6 @@ export default {
 /* 边框border修正 */
 .sheet-header .tbl-cell {
   line-height: 39px;
-  /* font-weight: bold; */
   color: #909399;
   font-size: 14px;
   background: #fff;
@@ -4822,7 +4821,6 @@ input::input-placeholder {
 }
 .search-text input{
   font-size: 12px;
-  font-weight: bold;
   color: #2988e7;
   position: absolute;
   left: 4px;
@@ -5090,7 +5088,6 @@ input::input-placeholder {
   text-align: center;
   line-height: 24px;
   font-size: 14px;
-  font-weight: normal;
   border-radius: 50%;
   background: #fff;
   margin-left: 2px;

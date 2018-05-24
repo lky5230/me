@@ -45,7 +45,9 @@
                 暂无浏览记录&nbsp;<i class="fa fa-frown-o" aria-hidden="true"></i>
               </div>
               <template v-else>
-                <div class="his">最近浏览：</div>
+                <div class="his">
+                  —&nbsp;&nbsp;最近浏览&nbsp;&nbsp;—
+                </div>
                 <div 
                   v-for="d in searchData2.d" 
                   :key="d.id" 
@@ -190,8 +192,8 @@ export default {
 .top{
   height: @height;
   width: 100%;
-  background-color: #f2f2f2;
-  color: rgb(73, 73, 73);
+  background-color: #333;
+  color: #efefef;
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -252,7 +254,7 @@ export default {
     left: 0px;
     width: 100%;
     height: calc(~"100vh - @{height}");
-    background: rgba(0, 0, 0, .03);
+    background: rgba(255, 255, 255, .7);
     .searchInp{
       position: absolute;
       width: calc(~"100% - 2*@{logoWidth} - 2*@{navWidth} - 10px");
@@ -269,7 +271,7 @@ export default {
         border: none;
         outline: none;
         background: transparent;
-        color: #666;
+        color: #e4e4e4;
         font-size: 14px;
         text-indent: 28px;
         transition: all .3s;
@@ -282,10 +284,11 @@ export default {
         background: #fff;
         max-height: 280px;
         border: 1px solid #ddd;
+        border-radius: 4px;
         border-top: none;
         padding-top: 10px;
         padding-bottom: 10px;
-        box-shadow: 0px 4px 8px #e8e8e8;
+        box-shadow: 0px 4px 12px #aeaeae;
         .search-item {
           color: #8f8f8f;
           cursor: pointer;
@@ -299,8 +302,10 @@ export default {
           font-size: 12px;
           color: @activeColor;
           margin-left: 10px;
-          margin-bottom: 6px;
+          padding-bottom: 5px;
           margin-right: 10px;
+          text-align: center;
+          position: relative;
         }
         .noRes{
           height: 32px;

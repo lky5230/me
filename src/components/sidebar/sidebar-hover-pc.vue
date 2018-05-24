@@ -324,7 +324,7 @@ export default {
   transition: color .15s;
   display: flex;
   align-items: center;
-  color: #333;
+  color: #efefef;
   .menu-bars{
     transition: transform .3s;
   }
