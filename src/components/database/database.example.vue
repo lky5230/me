@@ -3,6 +3,7 @@
       <button style="padding: 6px; border: 1px solid #666;" @click="getTable">获取表格信息21</button>
       <button style="padding: 6px; border: 1px solid #666;" @click="checkedRows">获取选中的行</button>
       <button style="padding: 6px; border: 1px solid #666;" @click="add">增加一行</button>
+      <button style="padding: 6px; border: 1px solid #666;" @click="xls">导出xls文件</button>
       <button style="padding: 6px; border: 1px solid #666;" title="第一列设置了required=true" @click="checkRequired">对required=true检查</button>
       <button style="padding: 6px; border: 1px solid #666;" @click="reset">doReset</button>
       注意：表格宽高是撑满父容器的
@@ -371,11 +372,8 @@ export default {
           required: true,
         },
         a2: {
-          type: "opt_select",
-          option: [{id: 0, name: 'name0'},{id: 2, name: 'name2'},{id: 3, name: 'name3'}],
-          
+          type: "edit",
           value: 'name0',
-          id: 0,
           required: true,
         },
         a3: {
@@ -412,7 +410,7 @@ export default {
         },
         a8: {
           type: "number",
-          value: 121,
+          value: i,
           style: {
             color: '#000',
             background: '#ffd0d0'
@@ -870,6 +868,32 @@ export default {
           //成功执行 success，失败执行 faild
           e.success()
         }, 4500)
+    },
+    //导出xls文件
+    xls(){
+      let tbl = this.$refs.database.getTable();
+      let row = tbl.row;
+      let col = tbl.col;
+      //表头
+      let _col = [];
+      for(let i=0; i<col.length; i++){
+        _col.push(col[i].title)
+      }
+      //表体
+      let _row = [];
+      for(let m=0; m<row.length; m++){
+        let line = [];
+        for(let i=0; i<col.length; i++){
+          let v = row[m][col[i].props].value;
+          if(v instanceof Array){
+            line.push(v.join(','))
+          }else{
+            line.push(v)
+          }
+        }
+        _row.push(line)
+      }
+      this.$refs.database.exportXLS(_col, _row);
     },
 
 
