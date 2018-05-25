@@ -1484,23 +1484,69 @@
         }">
         <div v-show="!option_hide_arrow" class="arrow"></div>
         <div class="operate-item-wrap">
-          <div v-show="operateItem.save" class="operate-item" @click="operateFn('save')">
+          <div 
+            v-show="
+              operate_info.operate_item == undefined
+              ?
+              true
+              :
+              operate_info.operate_item.save
+            "
+            class="operate-item" 
+            @click="operateFn('save')">
             <i class="fa fa-floppy-o"></i>&nbsp;&nbsp;
             保存
           </div>
-          <div v-show="operateItem.add" :class="{'no-entry': entry == false}" class="operate-item" @click="operateFn('add')">
+          <div 
+            v-show="
+              operate_info.operate_item == undefined
+              ?
+              true
+              :
+              operate_info.operate_item.add
+            "
+            :class="{'no-entry': entry == false}" 
+            class="operate-item" 
+            @click="operateFn('add')">
             <i class="fa fa-plus"></i>&nbsp;&nbsp;
             增加一行
           </div>
-          <div v-show="operateItem.remove" class="operate-item" @click="operateFn('remove')">
+          <div  
+            v-show="
+              operate_info.operate_item == undefined
+              ?
+              true
+              :
+              operate_info.operate_item.remove
+            "
+            class="operate-item" 
+            @click="operateFn('remove')">
             <i class="fa fa-minus"></i>&nbsp;&nbsp;
             删除该行
           </div>
-          <div v-show="operateItem.up" class="operate-item" @click="operateFn('up')">
+          <div  
+            v-show="
+              operate_info.operate_item == undefined
+              ?
+              true
+              :
+              operate_info.operate_item.up
+            "
+            class="operate-item" 
+            @click="operateFn('up')">
             <div class="fa fa-caret-up"></div>&nbsp;&nbsp;
             向上移动
           </div>
-          <div v-show="operateItem.down" class="operate-item" @click="operateFn('down')">
+          <div  
+            v-show="
+              operate_info.operate_item == undefined
+              ?
+              true
+              :
+              operate_info.operate_item.down
+            "
+            class="operate-item" 
+            @click="operateFn('down')">
             <div class="fa fa-caret-down"></div>&nbsp;&nbsp;
             向下移动
           </div>
@@ -1543,16 +1589,6 @@ export default {
     option_limit: { default: 100 },
     //是否显示操作列
     showOperate: { default: false },
-    //操作列的项
-    operateItem: {
-      default: ()=>({
-        save: true,
-        add: true,
-        remove: true,
-        up: true,
-        down: true,
-      })
-    },
     //是否显示状态列
     showStatus: { default: false },
 
@@ -3763,6 +3799,7 @@ export default {
       //禁用tab键
       if(e.keyCode == 9){
         e.preventDefault();
+        this.cellNav('right')
       };
       switch (e.keyCode) {
         case 38:

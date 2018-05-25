@@ -24,7 +24,6 @@
           :entry="entry"
           :showCheckBoxAndIndex="showCheckBoxAndIndex"
           :showOperate="showOperate"
-          :operateItem="operateItem"
           :onlyShowIndex="onlyShowIndex"
           :onlyShowCheckBox="onlyShowCheckBox"
           :showPrompt="showPrompt"
@@ -344,14 +343,7 @@ export default {
       onlyShowCheckBox: true,
       //是否显示操作列
       showOperate: true,
-      //操作列的项
-      operateItem: {
-        save: true,
-        add: true,
-        remove: true,
-        up: true,
-        down: true,
-      },
+      
       //是否显示状态标色列
       showStatus: true,
 
@@ -372,6 +364,14 @@ export default {
       r.push({
         checked: i == 6||i==3||i==2? true: false, //有复选框时，表示是否初始化选中
         noCheckAble: i == 1 || i == 2? true: false, //true表示复选框不可用
+        operate_item: { //表示存在操作列时，操作项有哪些
+          save: i == 6||i==3||i==2? true: false,
+          add: true,
+          remove: true,
+          up: true,
+          down: true,
+        },
+
         a1: {
           type: "opt_mul_select",
           option: [{id: 1, name: 'name1'},{id: 2, name: 'name2'},{id: 3, name: 'name3'}],
