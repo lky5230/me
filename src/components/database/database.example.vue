@@ -31,6 +31,7 @@
           :option_limit="option_limit"
           :searchDelayTime="searchDelayTime"
           :showOptionPage="showOptionPage"
+          :optionQueryAlias="optionQueryAlias"
           @selectChange="selectChange"
           @dateChange="dateChange"
           @saveLine="saveLine"
@@ -355,6 +356,12 @@ export default {
       searchDelayTime: 500,
       //option下拉是否分页
       showOptionPage: true,
+      //分页请求的查询字符串alias
+      optionQueryAlias: {
+        limit: 'li',
+        offset: 'off',
+        q: 'query'
+      },
 
 
     }
@@ -588,7 +595,7 @@ export default {
     setTimeout(()=>{
       this.rowData = r;
       this.$refs.database.doReset(true);
-    }, 2000)
+    }, 300)
     
     let i = 0;
     this.entry = {

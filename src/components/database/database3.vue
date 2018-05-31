@@ -1585,6 +1585,14 @@ export default {
     searchDelayTime: { default: 500 },
     //option选项框是否进行分页
     showOptionPage: { default: true },
+    //分页请求的参数alias（每页条数，偏移，查询）
+    optionQueryAlias: { 
+      default: ()=>({
+        limit: 'limit',
+        offset: 'offset',
+        q: 'q',
+      })
+    },
     //option分页时一页显示多少条
     option_limit: { default: 100 },
     //是否显示操作列
@@ -3559,27 +3567,19 @@ export default {
       if(!row.url){
         return Promise.reject('缺失url！');
       };
-      
+      let optQuery = {};
       if(this.showOptionPage){
-        let fullUrl = this.addUrlQuery(
-          row.url,
-          {
-            limit: this.option_limit,
-            offset: (this.option_current_page - 1) * this.option_limit,
-            q: this.option_search
-          }
-        );
-        return this.$http.get(fullUrl);
+        optQuery[this.optionQueryAlias.limit] = this.option_limit;
+        optQuery[this.optionQueryAlias.offset] = (this.option_current_page - 1) * this.option_limit;
+        optQuery[this.optionQueryAlias.q] = this.option_search;
       }else{
-        let fullUrl = this.addUrlQuery(
-          row.url,
-          {
-            q: this.option_search
-          }
-        );
-        return this.$http.get(fullUrl);
+        optQuery[this.optionQueryAlias.q] = this.option_search;
       };
-      
+      let fullUrl = this.addUrlQuery(
+        row.url,
+        optQuery
+      );
+      return this.$http.get(fullUrl);
     },
     //隐藏option
     hideOption(){
