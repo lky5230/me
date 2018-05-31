@@ -18,7 +18,7 @@ module.exports = {
   
     // 使用带有浏览器内编译器的完整构建版本
     // 查阅 https://cn.vuejs.org/v2/guide/installation.html#运行时-编译器-vs-只包含运行时
-    compiler: false,
+    // compiler: false,
   
     // babel-loader 默认会跳过 node_modules 依赖。
     // 通过这个选项可以显式转译一个依赖。
