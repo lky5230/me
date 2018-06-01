@@ -4184,7 +4184,7 @@ export default {
           }
         };
         vm.dragLineShow = false;
-        vm.doLayout();
+        // vm.doLayout();
         window.removeEventListener('mousemove', mousemove);
         window.removeEventListener('mouseup', mouseup);
       };
