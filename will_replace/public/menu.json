@@ -1,0 +1,674 @@
+[
+    {
+        "id": "72",
+        "name": "物料管理",
+        "code": "MaterialBasic",
+        "url": "/test",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "33",
+        "name": "消息系统",
+        "code": "message",
+        "url": "/iframe:",
+        "parentid": "6",
+        "icon": "el-icon-setting",
+        "type": "普通"
+    },
+    {
+        "id": "34",
+        "name": "消息查看",
+        "code": "mailview",
+        "url": "/iframe:/System/mailview",
+        "parentid": "33",
+        "icon": "el-icon-setting",
+        "type": "普通"
+    },
+    {
+        "id": "76",
+        "name": "工装信息管理",
+        "code": "InstrumentInfo",
+        "url": "/route:/BasicData/InstrumentInfo",
+        "parentid": "75",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "22",
+        "name": "角色管理",
+        "code": "roleManage",
+        "url": "/route:/SystemConfig/RolesManage",
+        "parentid": "18",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "23",
+        "name": "模块管理",
+        "code": "moduleManage",
+        "url": "/route:/System/modulemanage",
+        "parentid": "103",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "24",
+        "name": "权限列表",
+        "code": "permissionManage",
+        "url": "/route:/System/permissionmanage",
+        "parentid": "103",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "25",
+        "name": "角色权限配置",
+        "code": "rolePermissionManage",
+        "url": "/route:/System/rolepermission",
+        "parentid": "18",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "96",
+        "name": "待检入库单",
+        "code": "WaitInspected",
+        "url": "/route:/SupplyChain/WaitInspected",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "4",
+        "name": "产品数据管理",
+        "code": "BasicData",
+        "url": "/iframe:/",
+        "parentid": "0",
+        "icon": "near_me",
+        "icon-color": "#2196f3",
+        "type": "全屏"
+    },
+    {
+        "id": "64",
+        "name": "工序信息",
+        "code": "ProcessInfo",
+        "url": "/route:/CraftProcess/ProcessInfo",
+        "parentid": "9",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "502",
+        "name": "主生产计划变更表",
+        "code": "MasterplanChange",
+        "url": "/route:/MRP/MasterplanChange",
+        "parentid": "55",
+        "icon": "fa-file-text-o",
+        "type": null
+    },
+    {
+        "id": "481",
+        "name": "审批项目",
+        "code": "audititem",
+        "url": "/route:/System/audititem",
+        "parentid": "28",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "11",
+        "name": "设备台账管理",
+        "code": "deviceaccount",
+        "url": "/iframe:/ProductManage/account",
+        "parentid": "10",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "12",
+        "name": "设备保养计划",
+        "code": "devicemaintain",
+        "url": "/iframe:/ProductManage/maintain",
+        "parentid": "10",
+        "icon": "el-icon-setting",
+        "type": "无菜单"
+    },
+    {
+        "id": "13",
+        "name": "设备业务申报",
+        "code": "deviceapplicate",
+        "url": "/iframe:/ProductManage/applicate",
+        "parentid": "10",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "54",
+        "name": "仓库组管理",
+        "code": "Waregroup",
+        "url": "/route:/systemConfig/Waregroup",
+        "parentid": "50",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "55",
+        "name": "主生产计划",
+        "code": "Masterplanbills",
+        "url": "/route:/",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "58",
+        "name": "主生产计划列表",
+        "code": "Masterplanbills2",
+        "url": "/route:/MRP/Masterplanbills",
+        "parentid": "55",
+        "icon": "fa-file-text-o",
+        "type": null
+    },
+    {
+        "id": "15",
+        "name": "用户管理",
+        "code": "UserManage",
+        "url": "/route:/systemConfig/UserManage",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": "普通"
+    },
+    {
+        "id": "482",
+        "name": "审批流程配置",
+        "code": "auditProcess",
+        "url": "/iframe:/System/auditprocess",
+        "parentid": "28",
+        "icon": "el-icon-setting",
+        "type": "普通"
+    },
+    {
+        "id": "3",
+        "name": "生产管理",
+        "code": "SupplyChain",
+        "url": "/iframe:/",
+        "parentid": "0",
+        "icon": "layers",
+        "icon-color": "#ff5722",
+        "type": "2"
+    },
+    {
+        "id": "65",
+        "name": "物料分类管理",
+        "code": "Materialclassify",
+        "url": "/route:/BasicData/Materialclassify",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "51",
+        "name": "仓库管理",
+        "code": "Warehouse",
+        "url": "/route:/systemConfig/Warehouse",
+        "parentid": "50",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "16",
+        "name": "组织结构管理",
+        "code": "Department",
+        "url": "/route:/systemConfig/Department",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "38",
+        "name": "入库单",
+        "code": "Stockinlists",
+        "url": "/route:/StoreRoom/Stockinlists",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "67",
+        "name": "工艺过程管理",
+        "code": "CraftProcess",
+        "url": "/route:/BasicData/CraftProcess",
+        "parentid": "9",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "66",
+        "name": "工作中心",
+        "code": "Workcenter",
+        "url": "/route:/systemConfig/Workcenter",
+        "parentid": "69",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "74",
+        "name": "工装分类管理",
+        "code": "InstrumentClassify",
+        "url": "/route:/BasicData/InstrumentClassify",
+        "parentid": "75",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "99",
+        "name": "产品配套单",
+        "code": "Assembly",
+        "url": "/route:/SupplyChain/Assembly",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "28",
+        "name": "审批流程管理",
+        "code": "auditprocess",
+        "url": "/iframe:/System/auditprocess",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "476",
+        "name": "组件配套单",
+        "code": "ComponentAssembly",
+        "url": "/route:/SupplyChain/ComponentAssembly",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "2",
+        "name": "库房管理",
+        "code": "StoreRoom",
+        "url": "/iframe:/",
+        "parentid": "0",
+        "icon": "widgets",
+        "icon-color": "#4caf50",
+        "type": null
+    },
+    {
+        "id": "39",
+        "name": "出库单",
+        "code": "Stockoutlists",
+        "url": "/route:/StoreRoom/Stockoutlists",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "8",
+        "name": "物料BOM管理",
+        "code": "MaterialBom",
+        "url": "/route:/BasicData/MaterialBom",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "52",
+        "name": "仓区管理",
+        "code": "Warearea",
+        "url": "/route:/systemConfig/Warearea",
+        "parentid": "50",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "77",
+        "name": "工装库房配置",
+        "code": "InstrumentHouse",
+        "url": "/route:/BasicData/InstrumentHouse",
+        "parentid": "75",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "9",
+        "name": "工艺过程管理",
+        "code": "Craft",
+        "url": "/iframe:/BasicData/Craft",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "61",
+        "name": "MPS方案配置",
+        "code": "MPSParams",
+        "url": "/route:/MPSConfig/MPSParams",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "75",
+        "name": "工装管理",
+        "code": "InstrumentManage",
+        "url": "/route:/BasicData/InstrumentManage",
+        "parentid": "0",
+        "icon": "view_carousel",
+        "icon-color": "#795548",
+        "type": null
+    },
+    {
+        "id": "44",
+        "name": "盘点单",
+        "code": "Stockchecklists",
+        "url": "/route:/StoreRoom/Stockchecklists",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "78",
+        "name": "工装台账管理",
+        "code": "InstrumentAccount",
+        "url": "/route:/BasicData/InstrumentAccount",
+        "parentid": "75",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "53",
+        "name": "货架管理",
+        "code": "Wareposition",
+        "url": "/route:/systemConfig/Wareposition",
+        "parentid": "50",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "70",
+        "name": "物料分类权限",
+        "code": "MaterialclassifyAuth",
+        "url": "/route:/BasicData/Materialclassifyauth",
+        "parentid": "18",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "86",
+        "name": "物料需求计划",
+        "code": "Mrp",
+        "url": "/route:/SupplyChain/Mrp",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "40",
+        "name": "安全库存预警",
+        "code": "Safestock",
+        "url": "/route:/StoreRoom/Safestock",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "79",
+        "name": "工装借用管理",
+        "code": "InstrumentRent",
+        "url": "/route:/BasicData/InstrumentRent",
+        "parentid": "75",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "50",
+        "name": "仓库配置",
+        "code": "StoreConfig",
+        "url": "/route:/systemConfig/StoreConfig",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "14",
+        "name": "供应商管理",
+        "code": "supplier",
+        "url": "/iframe:/SupplyChain/supplier",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "90",
+        "name": "物料代用清单",
+        "code": "MaterialSubstBill",
+        "url": "/route:/SupplyChain/MaterialSubstBill",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "10",
+        "name": "设备管理",
+        "code": "Device",
+        "url": "/iframe:/",
+        "parentid": "0",
+        "icon": "local_mall",
+        "icon-color": "#9c27b0",
+        "type": null
+    },
+    {
+        "id": "62",
+        "name": "基本单位管理",
+        "code": "Basicunit",
+        "url": "/route:/systemConfig/Basicunit",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "94",
+        "name": "生产任务单",
+        "code": "productivetask",
+        "url": "/route:/SupplyChain/productivetask",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "5",
+        "name": "系统管理",
+        "code": "systemConfig",
+        "url": "/iframe:/",
+        "parentid": "0",
+        "icon": "android",
+        "icon-color": "#15aac3",
+        "type": "无菜单"
+    },
+    {
+        "id": "48",
+        "name": "库存台账查询",
+        "code": "Stockaccount",
+        "url": "/route:/StoreRoom/Stockaccount",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "26",
+        "name": "工厂日期",
+        "code": "factorycalendar",
+        "url": "/iframe:/System/factorycalendar",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "80",
+        "name": "报废报损管理",
+        "code": "InstrumentDiscard",
+        "url": "/route:/BasicData/InstrumentDiscard",
+        "parentid": "75",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "478",
+        "name": "Bom树形查看",
+        "code": "BOMtree",
+        "url": "/route:/systemConfig/BOMtree",
+        "parentid": "4",
+        "icon": "el-icon-setting",
+        "type": "普通"
+    },
+    {
+        "id": "63",
+        "name": "库房权限管理",
+        "code": "StockAuth",
+        "url": "/route:/StoreRoom/StockAuth",
+        "parentid": "18",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "88",
+        "name": "采购申请单",
+        "code": "PurchaseApply",
+        "url": "/route:/SupplyChain/PurchaseApply",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "47",
+        "name": "库存查询",
+        "code": "Stocksearch",
+        "url": "/route:/StoreRoom/Stocksearch",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "103",
+        "name": "系统模块",
+        "code": "SystemModel",
+        "url": "/iframe:",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "49",
+        "name": "超期报废管理",
+        "code": "Stockdiscard",
+        "url": "/route:/StoreRoom/Stockdiscard",
+        "parentid": "2",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "18",
+        "name": "权限管理",
+        "code": "Security",
+        "url": "/iframe:",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "98",
+        "name": "采购批次管理",
+        "code": "PurchaseBatch",
+        "url": "/route:/SupplyChain/PurchaseBatch",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "84",
+        "name": "委外加工单",
+        "code": "SubContract",
+        "url": "/route:/SupplyChain/SubContract",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "20",
+        "name": "数据字典",
+        "code": "DataDict",
+        "url": "/iframe:/System/DataDict",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "69",
+        "name": "基本配置",
+        "code": "BasicConfig",
+        "url": "/iframe:",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "82",
+        "name": "订单合同管理",
+        "code": "OrderContract",
+        "url": "/route:/SupplyChain/OrderContract",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "17",
+        "name": "缓存清理",
+        "code": "clearCache",
+        "url": "/iframe:/System/cacheclear",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "21",
+        "name": "系统参数配置",
+        "code": "systemconfig",
+        "url": "/iframe:/System/systemconfig",
+        "parentid": "5",
+        "icon": "el-icon-setting",
+        "type": "普通"
+    },
+    {
+        "id": "92",
+        "name": "投料单",
+        "code": "DispatchBill",
+        "url": "/route:/SupplyChain/DispatchBill",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "474",
+        "name": "组件需求计划",
+        "code": "componentRequire",
+        "url": "/route:/SupplyChain/componentRequire",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    },
+    {
+        "id": "479",
+        "name": "其他需求计划",
+        "code": "otherRequire",
+        "url": "/route:/SupplyChain/otherRequire",
+        "parentid": "3",
+        "icon": "el-icon-setting",
+        "type": null
+    }
+]
