@@ -25,6 +25,9 @@ Vue.use(ElementUI);
 import localforage from 'localforage';
 Vue.prototype.$localforage = localforage;
 
+//自动注册'components'文件夹下的vue组件
+import '@/register';
+
 //css
 import '@/style/reset.css';
 import '@/style/globle.css';

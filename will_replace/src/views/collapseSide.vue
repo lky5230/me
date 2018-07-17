@@ -9,7 +9,10 @@
                 :key="item.id" 
                 v-if="item._child.length == 0"
                 @click.stop="goPage(item)"
-                class="mdui-list-item mdui-ripple">
+                class="mdui-list-item mdui-ripple"
+                :class="{
+                    'active': $route.path == item.url
+                }">
                 <template v-if="wrap">
                     <i 
                         class="mdui-list-item-icon mdui-icon material-icons" 
@@ -65,11 +68,33 @@ export default {
   },
   methods: {
     goPage(item){
-        this.$store.dispatch('goPage', item)
+        this.$store.dispatch('goPage', {...item});
+        this.$store.commit('createTimestamp');
     }
-  }
+  },
+
 };
 </script>
 
 <style lang="less" scoped>
+.mdui-list-item{
+    position: relative;
+    &::before{
+        position: absolute;
+        height: 100%;
+        width: 4px;
+        background: #00897b;
+        right: -4px;
+        top: 0px;
+        content: ' ';
+        transition: all .2s;
+    }
+    &.active{
+        color: #00897b;
+        background-color: rgba(0, 0, 0, .08);
+        &::before{ 
+            right: 0px;
+        }
+    }
+}
 </style>

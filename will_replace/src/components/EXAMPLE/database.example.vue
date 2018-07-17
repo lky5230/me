@@ -860,7 +860,7 @@ export default {
     },
     //重置表格数据
     reset(){
-      this.$refs.database.doReset(true)
+      this.$refs.database.doReset(true) //参数：boolean（是否完全重置）
     },
 
 

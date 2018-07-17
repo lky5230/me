@@ -11,6 +11,7 @@ export default new Vuex.Store({
     //目录信息（层次+扁平化）
     deepMenu: [],
     expandMenu: [],
+    timestamp: 0,
   },
   mutations: {
     //切换-当前页信息
@@ -21,6 +22,10 @@ export default new Vuex.Store({
     getMenu(state, payload){
       state.deepMenu = payload.deepMenu;
       state.expandMenu = payload.expandMenu;
+    },
+    //生成新的时间戳
+    createTimestamp(state, payload){
+      state.timestamp = Date.now();
     },
 
   },

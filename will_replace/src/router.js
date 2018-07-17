@@ -10,6 +10,9 @@ let router = new Router({
       component: r => require.ensure([], () => r(require('@/views/home.vue')), 'home'),
 
       children: [
+        /**
+         * 路由
+         */
         {
           path: '',
           name: 'index',
@@ -19,6 +22,9 @@ let router = new Router({
           name: 'test',
           component: r => require.ensure([], () => r(require('@/views/test/test.vue')), 'test')
         },
+
+
+
       ]
 
     },

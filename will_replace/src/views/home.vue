@@ -5,7 +5,7 @@
       <div class="mdui-toolbar mdui-color-teal-600">
         <a 
           href="javascript:;" 
-          mdui-drawer="{target: '#left-drawer', swipe: true}"
+          @click="drawerFn"
           class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white">
           <i class="mdui-icon material-icons">menu</i>
         </a>
@@ -82,7 +82,7 @@
       
 
       <div class="main">
-        <router-view />
+        <router-view :key="$router.fullPath" />
       </div>
       
     </div>
@@ -101,6 +101,7 @@ export default {
       searchKeys: '',
       searchShow: false,
       accountShow: false,
+      drawerDom: null,
     }
   },
   created(){
@@ -111,14 +112,26 @@ export default {
     document.addEventListener('click', ()=>{
       this.searchShow = false;
       this.accountShow = false;
-    })
+    });
+    this.drawerDom = new this.$mdui.Drawer('#left-drawer', {swipe: true});
   },
   watch: {
+
     '$route'(to, from){
       this.$nextTick(()=>{
         this.pagePosition(to);
-      })
+      });
     },
+
+    '$store.state.timestamp'(newval, oldval){
+      if(newval != 0){
+        let docWidth = document.body.offsetWidth || document.document.offsetWidth;
+        if(docWidth < 1024){
+          this.drawerDom.close();
+        };
+      };
+    },
+
   },
   computed: {
     //过滤搜索关键词
@@ -235,6 +248,10 @@ export default {
     accountQuit(){
       this.accountShow = false;
       this.$router.push('/login');
+    },
+    //抽屉
+    drawerFn(){
+      this.drawerDom.toggle();
     },
 
   },
