@@ -18,9 +18,9 @@ let router = new Router({
           name: 'index',
           component: r => require.ensure([], () => r(require('@/views/index/index.vue')), 'index')
         },{
-          path: 'test',
-          name: 'test',
-          component: r => require.ensure([], () => r(require('@/views/test/test.vue')), 'test')
+          path: 'database',
+          name: 'database',
+          component: r => require.ensure([], () => r(require('@/components/EXAMPLE/database.example.vue')), 'database')
         },
 
 

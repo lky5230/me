@@ -1,9 +1,9 @@
 [
     {
         "id": "72",
-        "name": "物料管理",
+        "name": "database 测试",
         "code": "MaterialBasic",
-        "url": "/test",
+        "url": "/database",
         "parentid": "4",
         "icon": "el-icon-setting",
         "type": null
