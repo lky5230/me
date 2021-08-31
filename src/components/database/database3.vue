@@ -17,6 +17,7 @@
     <div 
         ref="container" 
         class="container" 
+        @DOMMouseScroll.stop="mousewheel"
         @mousewheel.stop="mousewheel"
         @touchstart="touchstart"
         @click="navCoods = {}"
@@ -2363,14 +2364,14 @@ export default {
           if(scrollTop > 0){
             e.preventDefault()
           }
-          scrollTop -= scrollYSpeed;
+          scrollTop += scrollYSpeed;
         }
         if (e.detail < 0) {
           //向下，阻止滚动父层
           if(scrollTop < maxTop){
             e.preventDefault() 
           }
-          scrollTop += scrollYSpeed;
+          scrollTop -= scrollYSpeed;
         }
       }
       if (scrollTop < 0) scrollTop = 0;
